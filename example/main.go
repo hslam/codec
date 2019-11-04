@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"hslam.com/mgit/Mort/codec"
-	"hslam.com/mgit/Mort/codec/example/model"
-	"hslam.com/mgit/Mort/codec/example/model_copy"
-	"hslam.com/mgit/Mort/codec/example/pb"
-	"hslam.com/mgit/Mort/codec/example/pb_copy"
+	"hslam.com/git/x/codec"
+	"hslam.com/git/x/codec/example/model"
+	"hslam.com/git/x/codec/example/model_copy"
+	"hslam.com/git/x/codec/example/pb"
+	"hslam.com/git/x/codec/example/pb_copy"
 )
 
 func main(){

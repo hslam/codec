@@ -2,7 +2,7 @@ go test -v -run="none" -bench=. -benchtime=1s
 ```
 goos: darwin
 goarch: amd64
-pkg: hslam.com/mgit/Mort/codec
+pkg: hslam.com/git/x/codec
 BenchmarkEncodeJson-4    	 5000000	       381 ns/op
 BenchmarkEncodeXml-4     	 1000000	      2420 ns/op
 BenchmarkEncodeProto-4   	  500000	      3609 ns/op
@@ -16,7 +16,7 @@ BenchmarkCodecXml-4      	  200000	      8093 ns/op
 BenchmarkCodecProto-4    	  100000	     15428 ns/op
 BenchmarkCodecGob-4      	   50000	     23888 ns/op
 PASS
-ok  	hslam.com/mgit/Mort/codec	22.580s
+ok  	hslam.com/git/x/codec	22.580s
 ```
 
 example
