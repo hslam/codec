@@ -10,7 +10,7 @@ import (
 func main(){
 	var c codec.Codec
 	var data []byte
-	var obj=model.Student{Name:"张三",Age:18,Address:"江苏省"}
+	var obj=&model.Student{Name:"张三",Age:18,Address:"江苏省"}
 	//json
 	c=codec.JsonCodec{}
 	data,_=c.Encode(&obj)
@@ -44,4 +44,12 @@ func main(){
 	c.Decode(data,&obj_pb)
 	fmt.Println("proto 反序列化后：",obj_pb)
 
+	obj2:=[]byte{123}
+	//bytes
+	c=codec.BytesCodec{}
+	data,_=c.Encode(&obj2)
+	fmt.Printf("proto 序列化后：%x\n",data)
+	var obj_bytes []byte
+	c.Decode(data,&obj_bytes)
+	fmt.Println("proto 反序列化后：",obj_bytes)
 }

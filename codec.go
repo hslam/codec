@@ -1,6 +1,5 @@
 package codec
 
-
 import (
 	"github.com/golang/protobuf/proto"
 	"encoding/json"

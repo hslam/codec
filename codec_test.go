@@ -6,7 +6,6 @@ import (
 	"hslam.com/git/x/codec/example/pb"
 )
 
-
 func BenchmarkEncodeJson(t *testing.B) {
 	var obj=model.Student{Name:"张三",Age:18,Address:"江苏省"}
 	var c=JsonCodec{}
@@ -34,10 +33,18 @@ func BenchmarkEncodeProto(t *testing.B) {
 	}
 }
 
-
 func BenchmarkEncodeGob(t *testing.B) {
 	var obj=model.Student{Name:"张三",Age:18,Address:"江苏省"}
 	var c=GobCodec{}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Encode(&obj)
+	}
+}
+
+func BenchmarkEncodeBytes(t *testing.B) {
+	var obj=[]byte{123}
+	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
@@ -88,6 +95,16 @@ func BenchmarkDecodeGob(t *testing.B) {
 	}
 }
 
+func BenchmarkDecodeBytes(t *testing.B) {
+	var obj=[]byte{123}
+	var c=BytesCodec{}
+	data,_:=c.Encode(&obj)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy []byte
+		c.Decode(data,&obj_copy)
+	}
+}
 
 func BenchmarkCodecJson(t *testing.B) {
 	var obj=model.Student{Name:"张三",Age:18,Address:"江苏省"}
@@ -129,6 +146,17 @@ func BenchmarkCodecGob(t *testing.B) {
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
 		var obj_copy *model.Student
+		c.Decode(data,&obj_copy)
+	}
+}
+
+func BenchmarkCodecBytes(t *testing.B) {
+	var obj=[]byte{}
+	var c=BytesCodec{}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=c.Encode(&obj)
+		var obj_copy []byte
 		c.Decode(data,&obj_copy)
 	}
 }

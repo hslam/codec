@@ -1,25 +1,84 @@
-go test -v -run="none" -bench=. -benchtime=1s
+# codec
+A codec library written in golang.
+
+## Feature
+* json
+* xml
+* proto
+* gob
+* bytes
+
+## Get started
+
+### Install
 ```
-goos: darwin
-goarch: amd64
-pkg: hslam.com/git/x/codec
-BenchmarkEncodeJson-4    	 5000000	       381 ns/op
-BenchmarkEncodeXml-4     	 1000000	      2420 ns/op
-BenchmarkEncodeProto-4   	  500000	      3609 ns/op
-BenchmarkEncodeGob-4     	  500000	      3246 ns/op
-BenchmarkDecodeJson-4    	 1000000	      1316 ns/op
-BenchmarkDecodeXml-4     	  300000	      5484 ns/op
-BenchmarkDecodeProto-4   	  200000	     11410 ns/op
-BenchmarkDecodeGob-4     	  100000	     20217 ns/op
-BenchmarkCodecJson-4     	 1000000	      1787 ns/op
-BenchmarkCodecXml-4      	  200000	      8093 ns/op
-BenchmarkCodecProto-4    	  100000	     15428 ns/op
-BenchmarkCodecGob-4      	   50000	     23888 ns/op
-PASS
-ok  	hslam.com/git/x/codec	22.580s
+go get hslam.com/git/x/codec
+```
+### Import
+```
+import "hslam.com/git/x/codec"
+```
+### Usage
+#### Example
+```
+package main
+
+import (
+	"fmt"
+	"hslam.com/git/x/codec"
+	"hslam.com/git/x/codec/example/model"
+	"hslam.com/git/x/codec/example/pb"
+)
+
+func main(){
+	var c codec.Codec
+	var data []byte
+	var obj=model.Student{Name:"张三",Age:18,Address:"江苏省"}
+	//json
+	c=codec.JsonCodec{}
+	data,_=c.Encode(&obj)
+	fmt.Printf("json 序列化后：%x\n",data)
+	var obj_json *model.Student
+	c.Decode(data,&obj_json)
+	fmt.Println("json 反序列化后：",obj_json)
+
+	//xml
+	c=codec.XmlCodec{}
+	data,_=c.Encode(&obj)
+	fmt.Printf("xml 序列化后：%x\n",data)
+	var obj_xml *model.Student
+	c.Decode(data,&obj_xml)
+	fmt.Println("xml 反序列化后：",obj_xml)
+
+	//gob
+	c=codec.GobCodec{}
+	data,_=c.Encode(&obj)
+	fmt.Printf("gob 序列化后：%x\n",data)
+	var obj_gob *model.Student
+	c.Decode(data,&obj_gob)
+	fmt.Println("gob 反序列化后：",obj_gob)
+
+	obj1:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
+	//proto
+	c=codec.ProtoCodec{}
+	data,_=c.Encode(&obj1)
+	fmt.Printf("proto 序列化后：%x\n",data)
+	var obj_pb pb.Student
+	c.Decode(data,&obj_pb)
+	fmt.Println("proto 反序列化后：",obj_pb)
+
+	obj2:=[]byte{123}
+	//bytes
+	c=codec.BytesCodec{}
+	data,_=c.Encode(&obj2)
+	fmt.Printf("proto 序列化后：%x\n",data)
+	var obj_bytes []byte
+	c.Decode(data,&obj_bytes)
+	fmt.Println("proto 反序列化后：",obj_bytes)
+}
 ```
 
-example
+### Output
 ```
 json 序列化后：7b224e616d65223a22e5bca0e4b889222c22416765223a31382c2241646472657373223a22e6b19fe88b8fe79c81227d
 json 反序列化后： &{张三 18 江苏省}
@@ -29,4 +88,37 @@ gob 序列化后：32ff810301010753747564656e7401ff8200010301044e616d65010c00010
 gob 反序列化后： &{张三 18 江苏省}
 proto 序列化后：0a06e5bca0e4b88910121a09e6b19fe88b8fe79c81
 proto 反序列化后： {张三 18 江苏省 {} [] 0}
+proto 序列化后：7b
+proto 反序列化后： [123]
 ```
+
+### Benchmark
+go test -v -run="none" -bench=. -benchtime=1s
+```
+goos: darwin
+goarch: amd64
+pkg: hslam.com/git/x/codec
+BenchmarkEncodeJson-4    	 5000000	       383 ns/op
+BenchmarkEncodeXml-4     	 1000000	      2410 ns/op
+BenchmarkEncodeProto-4   	  500000	      3583 ns/op
+BenchmarkEncodeGob-4     	  500000	      3326 ns/op
+BenchmarkEncodeBytes-4   	500000000	         3.05 ns/op
+BenchmarkDecodeJson-4    	 1000000	      1323 ns/op
+BenchmarkDecodeXml-4     	  300000	      5516 ns/op
+BenchmarkDecodeProto-4   	  200000	     11388 ns/op
+BenchmarkDecodeGob-4     	  100000	     19873 ns/op
+BenchmarkDecodeBytes-4   	30000000	        51.5 ns/op
+BenchmarkCodecJson-4     	 1000000	      1782 ns/op
+BenchmarkCodecXml-4      	  200000	      8143 ns/op
+BenchmarkCodecProto-4    	  100000	     15417 ns/op
+BenchmarkCodecGob-4      	  100000	     23775 ns/op
+BenchmarkCodecBytes-4    	30000000	        55.5 ns/op
+PASS
+ok  	hslam.com/git/x/codec	28.945s
+```
+
+### Licence
+This package is licenced under a MIT licence (Copyright (c) 2019 Mort Huang)
+
+### Authors
+timer was written by Mort Huang.
