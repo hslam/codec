@@ -10,7 +10,27 @@ import (
 func main(){
 	var c codec.Codec
 	var data []byte
+
+	//bytes
+	obj_bytes:=[]byte{123}
+	c=codec.BytesCodec{}
+	data,_=c.Encode(&obj_bytes)
+	fmt.Printf("bytes 序列化后：%x\n",data)
+	var obj_bytes_copy []byte
+	c.Decode(data,&obj_bytes_copy)
+	fmt.Println("bytes 反序列化后：",obj_bytes_copy)
+
+	//proto
+	obj_pb:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
+	c=codec.ProtoCodec{}
+	data,_=c.Encode(&obj_pb)
+	fmt.Printf("proto 序列化后：%x\n",data)
+	var obj_pb_cp pb.Student
+	c.Decode(data,&obj_pb_cp)
+	fmt.Println("proto 反序列化后：",obj_pb_cp)
+
 	var obj=&model.Student{Name:"张三",Age:18,Address:"江苏省"}
+
 	//json
 	c=codec.JsonCodec{}
 	data,_=c.Encode(&obj)
@@ -34,22 +54,4 @@ func main(){
 	var obj_gob *model.Student
 	c.Decode(data,&obj_gob)
 	fmt.Println("gob 反序列化后：",obj_gob)
-
-	obj1:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
-	//proto
-	c=codec.ProtoCodec{}
-	data,_=c.Encode(&obj1)
-	fmt.Printf("proto 序列化后：%x\n",data)
-	var obj_pb pb.Student
-	c.Decode(data,&obj_pb)
-	fmt.Println("proto 反序列化后：",obj_pb)
-
-	obj2:=[]byte{123}
-	//bytes
-	c=codec.BytesCodec{}
-	data,_=c.Encode(&obj2)
-	fmt.Printf("proto 序列化后：%x\n",data)
-	var obj_bytes []byte
-	c.Decode(data,&obj_bytes)
-	fmt.Println("proto 反序列化后：",obj_bytes)
 }

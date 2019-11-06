@@ -34,7 +34,27 @@ import (
 func main(){
 	var c codec.Codec
 	var data []byte
-	var obj=model.Student{Name:"张三",Age:18,Address:"江苏省"}
+
+	//bytes
+	obj_bytes:=[]byte{123}
+	c=codec.BytesCodec{}
+	data,_=c.Encode(&obj_bytes)
+	fmt.Printf("bytes 序列化后：%x\n",data)
+	var obj_bytes_copy []byte
+	c.Decode(data,&obj_bytes_copy)
+	fmt.Println("bytes 反序列化后：",obj_bytes_copy)
+
+	//proto
+	obj_pb:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
+	c=codec.ProtoCodec{}
+	data,_=c.Encode(&obj_pb)
+	fmt.Printf("proto 序列化后：%x\n",data)
+	var obj_pb_cp pb.Student
+	c.Decode(data,&obj_pb_cp)
+	fmt.Println("proto 反序列化后：",obj_pb_cp)
+
+	var obj=&model.Student{Name:"张三",Age:18,Address:"江苏省"}
+
 	//json
 	c=codec.JsonCodec{}
 	data,_=c.Encode(&obj)
@@ -58,39 +78,21 @@ func main(){
 	var obj_gob *model.Student
 	c.Decode(data,&obj_gob)
 	fmt.Println("gob 反序列化后：",obj_gob)
-
-	obj1:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
-	//proto
-	c=codec.ProtoCodec{}
-	data,_=c.Encode(&obj1)
-	fmt.Printf("proto 序列化后：%x\n",data)
-	var obj_pb pb.Student
-	c.Decode(data,&obj_pb)
-	fmt.Println("proto 反序列化后：",obj_pb)
-
-	obj2:=[]byte{123}
-	//bytes
-	c=codec.BytesCodec{}
-	data,_=c.Encode(&obj2)
-	fmt.Printf("proto 序列化后：%x\n",data)
-	var obj_bytes []byte
-	c.Decode(data,&obj_bytes)
-	fmt.Println("proto 反序列化后：",obj_bytes)
 }
 ```
 
 ### Output
 ```
+bytes 序列化后：7b
+bytes 反序列化后： [123]
+proto 序列化后：0a06e5bca0e4b88910121a09e6b19fe88b8fe79c81
+proto 反序列化后： {张三 18 江苏省 {} [] 0}
 json 序列化后：7b224e616d65223a22e5bca0e4b889222c22416765223a31382c2241646472657373223a22e6b19fe88b8fe79c81227d
 json 反序列化后： &{张三 18 江苏省}
 xml 序列化后：3c53747564656e743e3c4e616d653ee5bca0e4b8893c2f4e616d653e3c4167653e31383c2f4167653e3c416464726573733ee6b19fe88b8fe79c813c2f416464726573733e3c2f53747564656e743e
 xml 反序列化后： &{张三 18 江苏省}
 gob 序列化后：32ff810301010753747564656e7401ff8200010301044e616d65010c000103416765010400010741646472657373010c00000018ff820106e5bca0e4b88901240109e6b19fe88b8fe79c8100
 gob 反序列化后： &{张三 18 江苏省}
-proto 序列化后：0a06e5bca0e4b88910121a09e6b19fe88b8fe79c81
-proto 反序列化后： {张三 18 江苏省 {} [] 0}
-proto 序列化后：7b
-proto 反序列化后： [123]
 ```
 
 ### Benchmark
