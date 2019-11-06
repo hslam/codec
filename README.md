@@ -98,23 +98,23 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: hslam.com/git/x/codec
-BenchmarkEncodeJson-4    	 5000000	       383 ns/op
-BenchmarkEncodeXml-4     	 1000000	      2410 ns/op
-BenchmarkEncodeProto-4   	  500000	      3583 ns/op
-BenchmarkEncodeGob-4     	  500000	      3326 ns/op
-BenchmarkEncodeBytes-4   	500000000	         3.05 ns/op
-BenchmarkDecodeJson-4    	 1000000	      1323 ns/op
-BenchmarkDecodeXml-4     	  300000	      5516 ns/op
-BenchmarkDecodeProto-4   	  200000	     11388 ns/op
-BenchmarkDecodeGob-4     	  100000	     19873 ns/op
-BenchmarkDecodeBytes-4   	30000000	        51.5 ns/op
-BenchmarkCodecJson-4     	 1000000	      1782 ns/op
-BenchmarkCodecXml-4      	  200000	      8143 ns/op
-BenchmarkCodecProto-4    	  100000	     15417 ns/op
-BenchmarkCodecGob-4      	  100000	     23775 ns/op
-BenchmarkCodecBytes-4    	30000000	        55.5 ns/op
+BenchmarkEncodeBytes-4   	500000000	         3.03 ns/op
+BenchmarkEncodeProto-4   	10000000	       156 ns/op
+BenchmarkEncodeJson-4    	 5000000	       381 ns/op
+BenchmarkEncodeXml-4     	 1000000	      2421 ns/op
+BenchmarkEncodeGob-4     	  500000	      3257 ns/op
+BenchmarkDecodeBytes-4   	30000000	        53.3 ns/op
+BenchmarkDecodeProto-4   	10000000	       184 ns/op
+BenchmarkDecodeJson-4    	 1000000	      1305 ns/op
+BenchmarkDecodeXml-4     	  300000	      5466 ns/op
+BenchmarkDecodeGob-4     	  100000	     19676 ns/op
+BenchmarkCodecBytes-4    	30000000	        55.9 ns/op
+BenchmarkCodecProto-4    	 5000000	       358 ns/op
+BenchmarkCodecJson-4     	 1000000	      1779 ns/op
+BenchmarkCodecXml-4      	  200000	      8111 ns/op
+BenchmarkCodecGob-4      	  100000	     23577 ns/op
 PASS
-ok  	hslam.com/git/x/codec	28.945s
+ok  	hslam.com/git/x/codec	28.877s
 ```
 
 ### Licence
