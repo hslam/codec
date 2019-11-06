@@ -3,9 +3,7 @@ package codec
 import (
 	"testing"
 	"hslam.com/git/x/codec/example/model"
-	"hslam.com/git/x/codec/example/model_copy"
 	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/pb_copy"
 )
 
 
@@ -52,7 +50,7 @@ func BenchmarkDecodeJson(t *testing.B) {
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *model_copy.Student
+		var obj_copy *model.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -63,7 +61,7 @@ func BenchmarkDecodeXml(t *testing.B) {
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *model_copy.Student
+		var obj_copy *model.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -74,7 +72,7 @@ func BenchmarkDecodeProto(t *testing.B) {
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *pb_copy.Student
+		var obj_copy *pb.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -85,7 +83,7 @@ func BenchmarkDecodeGob(t *testing.B) {
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *model_copy.Student
+		var obj_copy *model.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -97,7 +95,7 @@ func BenchmarkCodecJson(t *testing.B) {
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
-		var obj_copy *model_copy.Student
+		var obj_copy *model.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -108,7 +106,7 @@ func BenchmarkCodecXml(t *testing.B) {
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
-		var obj_copy *model_copy.Student
+		var obj_copy *model.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -119,7 +117,7 @@ func BenchmarkCodecProto(t *testing.B) {
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
-		var obj_copy *pb_copy.Student
+		var obj_copy *pb.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -130,7 +128,7 @@ func BenchmarkCodecGob(t *testing.B) {
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
-		var obj_copy *model_copy.Student
+		var obj_copy *model.Student
 		c.Decode(data,&obj_copy)
 	}
 }

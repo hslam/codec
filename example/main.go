@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"hslam.com/git/x/codec"
 	"hslam.com/git/x/codec/example/model"
-	"hslam.com/git/x/codec/example/model_copy"
 	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/pb_copy"
 )
 
 func main(){
@@ -17,7 +15,7 @@ func main(){
 	c=codec.JsonCodec{}
 	data,_=c.Encode(&obj)
 	fmt.Printf("json 序列化后：%x\n",data)
-	var obj_json *model_copy.Student
+	var obj_json *model.Student
 	c.Decode(data,&obj_json)
 	fmt.Println("json 反序列化后：",obj_json)
 
@@ -25,7 +23,7 @@ func main(){
 	c=codec.XmlCodec{}
 	data,_=c.Encode(&obj)
 	fmt.Printf("xml 序列化后：%x\n",data)
-	var obj_xml *model_copy.Student
+	var obj_xml *model.Student
 	c.Decode(data,&obj_xml)
 	fmt.Println("xml 反序列化后：",obj_xml)
 
@@ -42,7 +40,7 @@ func main(){
 	c=codec.ProtoCodec{}
 	data,_=c.Encode(&obj1)
 	fmt.Printf("proto 序列化后：%x\n",data)
-	var obj_pb pb_copy.Student
+	var obj_pb pb.Student
 	c.Decode(data,&obj_pb)
 	fmt.Println("proto 反序列化后：",obj_pb)
 
