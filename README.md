@@ -121,4 +121,4 @@ ok  	hslam.com/git/x/codec	28.877s
 This package is licenced under a MIT licence (Copyright (c) 2019 Mort Huang)
 
 ### Authors
-timer was written by Mort Huang.
+codec was written by Mort Huang.
