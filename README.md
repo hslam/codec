@@ -2,11 +2,12 @@
 A codec library written in golang.
 
 ## Feature
+* bytes
+* proto
 * json
 * xml
-* proto
 * gob
-* bytes
+
 
 ## Get started
 
