@@ -6,9 +6,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"encoding/gob"
-	"reflect"
 	"bytes"
-	"fmt"
 )
 
 type Codec interface {
@@ -72,17 +70,14 @@ type BytesCodec struct{
 }
 
 func (c BytesCodec) Encode(v interface{}) ([]byte, error) {
-	if data, ok := v.(*[]byte); ok {
-		return *data, nil
-	}
-	return nil, fmt.Errorf("%T must be a *[]byte", v)
+	return *v.(*[]byte),nil
 }
 
 func (c BytesCodec) Decode(data []byte, v interface{}) error {
-	reflect.Indirect(reflect.ValueOf(v)).SetBytes(data)
+	*v.(*[]byte)=make([]byte ,len(data))
+	copy(*v.(*[]byte),data)
 	return nil
 }
-
 
 type FastProtoCodec struct{
 }
