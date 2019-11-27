@@ -1,5 +1,5 @@
 syntax = "proto3";
-package gogopb;
+package fastpb;
 
 message Student {
     string Name = 1;

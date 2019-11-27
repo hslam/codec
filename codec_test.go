@@ -4,7 +4,7 @@ import (
 	"testing"
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/gogopb"
+	"hslam.com/git/x/codec/example/fastpb"
 	"hslam.com/git/x/codec/example/bytes"
 )
 
@@ -27,17 +27,17 @@ func BenchmarkEncodeBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkEncodeGoGoProtoNoReflect(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+func BenchmarkEncodeFastProtoNoReflect(t *testing.B) {
+	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		obj.Marshal()
 	}
 }
 
-func BenchmarkEncodeGoGoProto(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var c=GoGoProtoCodec{}
+func BenchmarkEncodeFastProto(t *testing.B) {
+	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=FastProtoCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
@@ -104,23 +104,23 @@ func BenchmarkDecodeBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkDecodeGoGoProtoNoReflect(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+func BenchmarkDecodeFastProtoNoReflect(t *testing.B) {
+	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	data,_:=obj.Marshal()
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy =&gogopb.Student{}
+		var obj_copy =&fastpb.Student{}
 		obj_copy.Unmarshal(data)
 	}
 }
 
-func BenchmarkDecodeGoGoProto(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var c=GoGoProtoCodec{}
+func BenchmarkDecodeFastProto(t *testing.B) {
+	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=FastProtoCodec{}
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy gogopb.Student
+		var obj_copy fastpb.Student
 		c.Decode(data,&obj_copy)
 	}
 }
@@ -194,23 +194,23 @@ func BenchmarkCodecBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGoGoProtoNoReflect(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+func BenchmarkCodecFastProtoNoReflect(t *testing.B) {
+	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=obj.Marshal()
-		var obj_copy =&gogopb.Student{}
+		var obj_copy =&fastpb.Student{}
 		obj_copy.Unmarshal(data)
 	}
 }
 
-func BenchmarkCodecGoGoProto(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var c=GoGoProtoCodec{}
+func BenchmarkCodecFastProto(t *testing.B) {
+	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=FastProtoCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
-		var obj_copy gogopb.Student
+		var obj_copy fastpb.Student
 		c.Decode(data,&obj_copy)
 	}
 }
