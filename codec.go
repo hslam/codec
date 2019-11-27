@@ -83,9 +83,27 @@ type FastProtoCodec struct{
 }
 
 func (c FastProtoCodec) Encode(v interface{}) ([]byte, error) {
-	return fastproto.Marshal(v.(fastproto.Message))
+	return fastproto.Marshal(v.(proto.Message))
 }
 
 func (c FastProtoCodec) Decode(data []byte, v interface{}) error {
-	return fastproto.Unmarshal(data, v.(fastproto.Message))
+	return fastproto.Unmarshal(data, v.(proto.Message))
+}
+
+type gen interface {
+	Marshal(buf []byte) ([]byte, error)
+	Unmarshal(buf []byte) (uint64, error)
+}
+
+type GencodeCodec struct{
+	Buffer []byte
+}
+
+func (c GencodeCodec) Encode(v interface{}) ([]byte, error) {
+	return v.(gen).Marshal(c.Buffer)
+}
+
+func (c GencodeCodec) Decode(data []byte, v interface{}) error {
+	_,err:=v.(gen).Unmarshal(data)
+	return err
 }

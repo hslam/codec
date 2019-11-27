@@ -30,8 +30,9 @@ import (
 	"hslam.com/git/x/codec"
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/fastpb"
 	"hslam.com/git/x/codec/example/bytes"
+	"hslam.com/git/x/codec/example/fastpb"
+	"hslam.com/git/x/codec/example/gencode"
 )
 
 func main(){
@@ -58,16 +59,33 @@ func main(){
 	object_copy.Unmarshal(obj_bytes_copy)
 	fmt.Println("bytes Decode：",object_copy)
 
+	//gencode_noreflect
+	obj_gencode_noreflect:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_gencode_noreflect.Marshal(nil)
+	fmt.Printf("obj_gencode_noreflect Encode：%x\n",data)
+	var obj_gencode_noreflect_cp=&gencode.Student{}
+	obj_gencode_noreflect_cp.Unmarshal(data)
+	fmt.Println("obj_gencode_noreflect Decode：",obj_gencode_noreflect_cp)
+
+	//gencode
+	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.GencodeCodec{}
+	data,_=c.Encode(&obj_gencode)
+	fmt.Printf("obj_gencode Encode：%x\n",data)
+	var obj_gencode_cp gencode.Student
+	c.Decode(data,&obj_gencode_cp)
+	fmt.Println("obj_gencode Decode：",obj_gencode_cp)
+
 	//fastpb_noreflect
-	obj_fastpb_noreflect:=fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	obj_fastpb_noreflect:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	data,_=obj_fastpb_noreflect.Marshal()
 	fmt.Printf("fastproto_noreflect Encode：%x\n",data)
-	var obj_fastpb_noreflect_cp=fastpb.Student{}
+	var obj_fastpb_noreflect_cp= fastpb.Student{}
 	obj_fastpb_noreflect_cp.Unmarshal(data)
 	fmt.Println("fastproto_noreflect Decode：",obj_fastpb_noreflect_cp)
 
 	//fastproto
-	obj_fastpb:=fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	obj_fastpb:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	c=codec.FastProtoCodec{}
 	data,_=c.Encode(&obj_fastpb)
 	fmt.Printf("fastproto Encode：%x\n",data)
@@ -118,6 +136,10 @@ bytes_noreflect Encode：044d6f7274124561727468
 bytes_noreflect Decode： &{Mort 18 Earth}
 bytes Encode：044d6f7274124561727468
 bytes Decode： &{Mort 18 Earth}
+obj_gencode_noreflect Encode：044d6f727412000000054561727468
+obj_gencode_noreflect Decode： &{Mort 18 Earth}
+obj_gencode Encode：044d6f727412000000054561727468
+obj_gencode Decode： {Mort 18 Earth}
 fastproto_noreflect Encode：0a044d6f727410121a054561727468
 fastproto_noreflect Decode： {Mort 18 Earth}
 fastproto Encode：0a044d6f727410121a054561727468
@@ -133,37 +155,43 @@ gob Decode： &{Mort 18 Earth}
 ```
 
 ### Benchmark
-go test -v -run="none" -bench=. -benchtime=1s -benchmem
+go test -v -run="none" -bench=. -benchtime=1s
 ```
 goos: darwin
 goarch: amd64
 pkg: hslam.com/git/x/codec
-BenchmarkEncodeBytesNoReflect-4       	30000000	        41.9 ns/op	      16 B/op	       1 allocs/op
-BenchmarkEncodeBytes-4                	30000000	        42.5 ns/op	      16 B/op	       1 allocs/op
-BenchmarkEncodeFastProtoNoReflect-4   	30000000	        48.8 ns/op	      16 B/op	       1 allocs/op
-BenchmarkEncodeFastProto-4            	20000000	        73.2 ns/op	      16 B/op	       1 allocs/op
-BenchmarkEncodeProto-4                	10000000	       141 ns/op	      16 B/op	       1 allocs/op
-BenchmarkEncodeJson-4                 	 5000000	       350 ns/op	      48 B/op	       1 allocs/op
-BenchmarkEncodeXml-4                  	  500000	      2474 ns/op	    4576 B/op	       9 allocs/op
-BenchmarkEncodeGob-4                  	  500000	      3253 ns/op	    1312 B/op	      23 allocs/op
-BenchmarkDecodeBytesNoReflect-4       	50000000	        34.7 ns/op	      16 B/op	       2 allocs/op
-BenchmarkDecodeBytes-4                	30000000	        53.1 ns/op	      24 B/op	       3 allocs/op
-BenchmarkDecodeFastProtoNoReflect-4   	30000000	        53.0 ns/op	      16 B/op	       2 allocs/op
-BenchmarkDecodeFastProto-4            	10000000	       128 ns/op	      64 B/op	       3 allocs/op
-BenchmarkDecodeProto-4                	10000000	       178 ns/op	      96 B/op	       3 allocs/op
-BenchmarkDecodeJson-4                 	 1000000	      1353 ns/op	     240 B/op	       7 allocs/op
-BenchmarkDecodeXml-4                  	  300000	      5476 ns/op	    1848 B/op	      45 allocs/op
-BenchmarkDecodeGob-4                  	  100000	     21358 ns/op	    7104 B/op	     187 allocs/op
-BenchmarkCodecBytesNoReflect-4        	20000000	        76.3 ns/op	      24 B/op	       3 allocs/op
-BenchmarkCodecBytes-4                 	20000000	        96.6 ns/op	      32 B/op	       4 allocs/op
-BenchmarkCodecFastProtoNoReflect-4    	20000000	       112 ns/op	      31 B/op	       3 allocs/op
-BenchmarkCodecFastProto-4             	10000000	       216 ns/op	      80 B/op	       4 allocs/op
-BenchmarkCodecProto-4                 	 5000000	       339 ns/op	     112 B/op	       4 allocs/op
-BenchmarkCodecJson-4                  	 1000000	      1861 ns/op	     288 B/op	       8 allocs/op
-BenchmarkCodecXml-4                   	  200000	      8552 ns/op	    6424 B/op	      54 allocs/op
-BenchmarkCodecGob-4                   	   50000	     23842 ns/op	    8416 B/op	     210 allocs/op
+BenchmarkEncodeBytesNoReflect-4       	100000000	        20.9 ns/op
+BenchmarkEncodeBytes-4                	100000000	        21.3 ns/op
+BenchmarkEncodeGencodeNoReflect-4     	100000000	        15.3 ns/op
+BenchmarkEncodeGencode-4              	50000000	        24.5 ns/op
+BenchmarkEncodeFastProtoNoReflect-4   	30000000	        48.8 ns/op
+BenchmarkEncodeFastProto-4            	20000000	        82.6 ns/op
+BenchmarkEncodeProto-4                	10000000	       137 ns/op
+BenchmarkEncodeJson-4                 	 5000000	       349 ns/op
+BenchmarkEncodeXml-4                  	  500000	      2440 ns/op
+BenchmarkEncodeGob-4                  	  500000	      3257 ns/op
+BenchmarkDecodeBytesNoReflect-4       	50000000	        34.7 ns/op
+BenchmarkDecodeBytes-4                	20000000	        53.0 ns/op
+BenchmarkDecodeGencodeNoReflect-4     	30000000	        46.0 ns/op
+BenchmarkDecodeGencode-4              	20000000	        87.8 ns/op
+BenchmarkDecodeFastProtoNoReflect-4   	30000000	        52.6 ns/op
+BenchmarkDecodeFastProto-4            	10000000	       137 ns/op
+BenchmarkDecodeProto-4                	10000000	       171 ns/op
+BenchmarkDecodeJson-4                 	 1000000	      1257 ns/op
+BenchmarkDecodeXml-4                  	  300000	      5246 ns/op
+BenchmarkDecodeGob-4                  	  100000	     19656 ns/op
+BenchmarkCodecBytesNoReflect-4        	30000000	        58.4 ns/op
+BenchmarkCodecBytes-4                 	20000000	        73.1 ns/op
+BenchmarkCodecGencodeNoReflect-4      	30000000	        60.7 ns/op
+BenchmarkCodecGencode-4               	10000000	       129 ns/op
+BenchmarkCodecFastProtoNoReflect-4    	20000000	       106 ns/op
+BenchmarkCodecFastProto-4             	10000000	       227 ns/op
+BenchmarkCodecProto-4                 	 5000000	       327 ns/op
+BenchmarkCodecJson-4                  	 1000000	      1686 ns/op
+BenchmarkCodecXml-4                   	  200000	      7942 ns/op
+BenchmarkCodecGob-4                   	  100000	     23231 ns/op
 PASS
-ok  	hslam.com/git/x/codec	41.743s
+ok  	hslam.com/git/x/codec	52.491s
 ```
 
 ### Licence

@@ -1,0 +1,5 @@
+struct Student {
+	Name string
+	Age int32
+	Address string
+}

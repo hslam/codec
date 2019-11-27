@@ -7,6 +7,7 @@ import (
 	"hslam.com/git/x/codec/example/pb"
 	"hslam.com/git/x/codec/example/bytes"
 	"hslam.com/git/x/codec/example/fastpb"
+	"hslam.com/git/x/codec/example/gencode"
 )
 
 func main(){
@@ -32,6 +33,23 @@ func main(){
 	c.Decode(data,&obj_bytes_copy)
 	object_copy.Unmarshal(obj_bytes_copy)
 	fmt.Println("bytes Decode：",object_copy)
+
+	//gencode_noreflect
+	obj_gencode_noreflect:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_gencode_noreflect.Marshal(nil)
+	fmt.Printf("obj_gencode_noreflect Encode：%x\n",data)
+	var obj_gencode_noreflect_cp=&gencode.Student{}
+	obj_gencode_noreflect_cp.Unmarshal(data)
+	fmt.Println("obj_gencode_noreflect Decode：",obj_gencode_noreflect_cp)
+
+	//gencode
+	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.GencodeCodec{}
+	data,_=c.Encode(&obj_gencode)
+	fmt.Printf("obj_gencode Encode：%x\n",data)
+	var obj_gencode_cp gencode.Student
+	c.Decode(data,&obj_gencode_cp)
+	fmt.Println("obj_gencode Decode：",obj_gencode_cp)
 
 	//fastpb_noreflect
 	obj_fastpb_noreflect:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
