@@ -3,6 +3,7 @@ A codec library written in golang.
 
 ## Feature
 * bytes
+* gogoproto
 * proto
 * json
 * xml
