@@ -3,6 +3,7 @@ A codec library written in golang.
 
 ## Feature
 * bytes
+* gencode
 * fastproto
 * proto
 * json
