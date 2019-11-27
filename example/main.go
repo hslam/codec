@@ -12,6 +12,13 @@ import (
 func main(){
 	var c codec.Codec
 	var data []byte
+	//bytes_noreflect
+	object_noreflect:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=object_noreflect.Marshal()
+	fmt.Printf("bytes_noreflect Encode：%x\n",data)
+	var object_noreflect_copy =&bytes.Student{}
+	object_noreflect_copy.Unmarshal(data)
+	fmt.Println("bytes_noreflect Decode：",object_noreflect_copy)
 
 	//bytes
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -25,13 +32,13 @@ func main(){
 	object_copy.Unmarshal(obj_bytes_copy)
 	fmt.Println("bytes Decode：",object_copy)
 
-	//gogopbnoreflect
-	obj_gogopbnoreflect:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_gogopbnoreflect.Marshal()
-	fmt.Printf("gogoprotonoreflect Encode：%x\n",data)
-	var obj_gogopbnoreflect_cp=gogopb.Student{}
-	obj_gogopbnoreflect_cp.Unmarshal(data)
-	fmt.Println("gogoprotonoreflect Decode：",obj_gogopbnoreflect_cp)
+	//gogopb_noreflect
+	obj_gogopb_noreflect:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_gogopb_noreflect.Marshal()
+	fmt.Printf("gogoproto_noreflect Encode：%x\n",data)
+	var obj_gogopb_noreflect_cp=gogopb.Student{}
+	obj_gogopb_noreflect_cp.Unmarshal(data)
+	fmt.Println("gogoproto_noreflect Decode：",obj_gogopb_noreflect_cp)
 
 	//gogoproto
 	obj_gogopb:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}

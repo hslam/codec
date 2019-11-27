@@ -14,11 +14,12 @@ func (s *Student)Marshal()([]byte, error)  {
 	if len(s.Name)>255||len(s.Address)>255||s.Age>255{
 		return nil,errors.New("the length is  too long")
 	}
-	var buffer=make([]byte,2+len(s.Name)+len(s.Address))
-	copy(buffer[0:], []byte{byte(len(s.Name))})
+	name_length:=len(s.Name)
+	var buffer=make([]byte,2+name_length+len(s.Address))
+	buffer[0]=byte(name_length)
 	copy(buffer[1:], []byte(s.Name))
-	copy(buffer[1+len(s.Name):], []byte{byte(s.Age)})
-	copy(buffer[2+len(s.Name):], []byte(s.Address))
+	buffer[1+name_length]=byte(s.Age)
+	copy(buffer[2+name_length:], []byte(s.Address))
 	return buffer,nil
 }
 func (s *Student)Unmarshal(data []byte) error  {

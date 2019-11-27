@@ -8,11 +8,11 @@ import (
 	"hslam.com/git/x/codec/example/bytes"
 )
 
-func BenchmarkEncodeGoGoProtoNoReflect(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+func BenchmarkEncodeBytesNoReflect(t *testing.B) {
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj.Marshal()
+		object.Marshal()
 	}
 }
 
@@ -24,6 +24,14 @@ func BenchmarkEncodeBytes(t *testing.B) {
 	for i := 0; i < t.N; i++ {
 		obj,_=object.Marshal()
 		c.Encode(&obj)
+	}
+}
+
+func BenchmarkEncodeGoGoProtoNoReflect(t *testing.B) {
+	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		obj.Marshal()
 	}
 }
 
@@ -71,13 +79,14 @@ func BenchmarkEncodeGob(t *testing.B) {
 		c.Encode(&obj)
 	}
 }
-func BenchmarkDecodeGoGoProtoNoReflect(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_:=obj.Marshal()
+func BenchmarkDecodeBytesNoReflect(t *testing.B) {
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var data []byte
+	data,_=object.Marshal()
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy =&gogopb.Student{}
-		obj_copy.Unmarshal(data)
+		var object_copy =&bytes.Student{}
+		object_copy.Unmarshal(data)
 	}
 }
 func BenchmarkDecodeBytes(t *testing.B) {
@@ -92,6 +101,16 @@ func BenchmarkDecodeBytes(t *testing.B) {
 		c.Decode(data,&obj_copy)
 		var object_copy =&bytes.Student{}
 		object_copy.Unmarshal(data)
+	}
+}
+
+func BenchmarkDecodeGoGoProtoNoReflect(t *testing.B) {
+	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_:=obj.Marshal()
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy =&gogopb.Student{}
+		obj_copy.Unmarshal(data)
 	}
 }
 
@@ -149,15 +168,17 @@ func BenchmarkDecodeGob(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGoGoProtoNoReflect(t *testing.B) {
-	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+func BenchmarkCodecBytesNoReflect(t *testing.B) {
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var data []byte
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=obj.Marshal()
-		var obj_copy =&gogopb.Student{}
-		obj_copy.Unmarshal(data)
+		data,_=object.Marshal()
+		var object_copy =&bytes.Student{}
+		object_copy.Unmarshal(data)
 	}
 }
+
 func BenchmarkCodecBytes(t *testing.B) {
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
@@ -170,6 +191,16 @@ func BenchmarkCodecBytes(t *testing.B) {
 		c.Decode(data,&obj_copy)
 		var object_copy =&bytes.Student{}
 		object_copy.Unmarshal(data)
+	}
+}
+
+func BenchmarkCodecGoGoProtoNoReflect(t *testing.B) {
+	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=obj.Marshal()
+		var obj_copy =&gogopb.Student{}
+		obj_copy.Unmarshal(data)
 	}
 }
 
