@@ -1,1 +1,1 @@
-protoc ./arith.proto --go_out=./
+protoc ./model.proto --go_out=./

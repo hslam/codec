@@ -5,6 +5,7 @@ import (
 	"hslam.com/git/x/codec"
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
+	"hslam.com/git/x/codec/example/gogopb"
 )
 
 func main(){
@@ -12,46 +13,55 @@ func main(){
 	var data []byte
 
 	//bytes
-	obj_bytes:=[]byte{123}
+	obj_bytes:=[]byte{77, 111, 114, 116, 44, 49, 56, 44, 69, 97, 114, 116, 104}
 	c=codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
-	fmt.Printf("bytes 序列化后：%x\n",data)
+	fmt.Printf("bytes Encode：%x\n",data)
 	var obj_bytes_copy []byte
 	c.Decode(data,&obj_bytes_copy)
-	fmt.Println("bytes 反序列化后：",obj_bytes_copy)
+	fmt.Println("bytes Decode：",obj_bytes_copy)
+
+	//gogoproto
+	obj_gogopb:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.GoGoProtoCodec{}
+	data,_=c.Encode(&obj_gogopb)
+	fmt.Printf("gogoproto Encode：%x\n",data)
+	var obj_gogopb_cp gogopb.Student
+	c.Decode(data,&obj_gogopb_cp)
+	fmt.Println("gogoproto Decode：",obj_gogopb_cp)
 
 	//proto
-	obj_pb:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
+	obj_pb:=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	c=codec.ProtoCodec{}
 	data,_=c.Encode(&obj_pb)
-	fmt.Printf("proto 序列化后：%x\n",data)
+	fmt.Printf("proto Encode：%x\n",data)
 	var obj_pb_cp pb.Student
 	c.Decode(data,&obj_pb_cp)
-	fmt.Println("proto 反序列化后：",obj_pb_cp)
+	fmt.Println("proto Decode：",obj_pb_cp)
 
-	var obj=&model.Student{Name:"张三",Age:18,Address:"江苏省"}
+	var obj=&model.Student{Name:"Mort",Age:18,Address:"Earth"}
 
 	//json
 	c=codec.JsonCodec{}
 	data,_=c.Encode(&obj)
-	fmt.Printf("json 序列化后：%x\n",data)
+	fmt.Printf("json Encode：%x\n",data)
 	var obj_json *model.Student
 	c.Decode(data,&obj_json)
-	fmt.Println("json 反序列化后：",obj_json)
+	fmt.Println("json Decode：",obj_json)
 
 	//xml
 	c=codec.XmlCodec{}
 	data,_=c.Encode(&obj)
-	fmt.Printf("xml 序列化后：%x\n",data)
+	fmt.Printf("xml Encode：%x\n",data)
 	var obj_xml *model.Student
 	c.Decode(data,&obj_xml)
-	fmt.Println("xml 反序列化后：",obj_xml)
+	fmt.Println("xml Decode：",obj_xml)
 
 	//gob
 	c=codec.GobCodec{}
 	data,_=c.Encode(&obj)
-	fmt.Printf("gob 序列化后：%x\n",data)
+	fmt.Printf("gob Encode：%x\n",data)
 	var obj_gob *model.Student
 	c.Decode(data,&obj_gob)
-	fmt.Println("gob 反序列化后：",obj_gob)
+	fmt.Println("gob Decode：",obj_gob)
 }

@@ -39,60 +39,72 @@ func main(){
 	obj_bytes:=[]byte{123}
 	c=codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
-	fmt.Printf("bytes 序列化后：%x\n",data)
+	fmt.Printf("bytes Encode：%x\n",data)
 	var obj_bytes_copy []byte
 	c.Decode(data,&obj_bytes_copy)
-	fmt.Println("bytes 反序列化后：",obj_bytes_copy)
+	fmt.Println("bytes Decode：",obj_bytes_copy)
+
+
+	//gogoproto
+	obj_gogopb:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.GoGoProtoCodec{}
+	data,_=c.Encode(&obj_gogopb)
+	fmt.Printf("gogoproto Encode：%x\n",data)
+	var obj_gogopb_cp gogopb.Student
+	c.Decode(data,&obj_gogopb_cp)
+	fmt.Println("gogoproto Decode：",obj_gogopb_cp)
 
 	//proto
-	obj_pb:=pb.Student{Name:"张三",Age:18,Address:"江苏省"}
+	obj_pb:=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	c=codec.ProtoCodec{}
 	data,_=c.Encode(&obj_pb)
-	fmt.Printf("proto 序列化后：%x\n",data)
+	fmt.Printf("proto Encode：%x\n",data)
 	var obj_pb_cp pb.Student
 	c.Decode(data,&obj_pb_cp)
-	fmt.Println("proto 反序列化后：",obj_pb_cp)
+	fmt.Println("proto Decode：",obj_pb_cp)
 
-	var obj=&model.Student{Name:"张三",Age:18,Address:"江苏省"}
+	var obj=&model.Student{Name:"Mort",Age:18,Address:"Earth"}
 
 	//json
 	c=codec.JsonCodec{}
 	data,_=c.Encode(&obj)
-	fmt.Printf("json 序列化后：%x\n",data)
+	fmt.Printf("json Encode：%x\n",data)
 	var obj_json *model.Student
 	c.Decode(data,&obj_json)
-	fmt.Println("json 反序列化后：",obj_json)
+	fmt.Println("json Decode：",obj_json)
 
 	//xml
 	c=codec.XmlCodec{}
 	data,_=c.Encode(&obj)
-	fmt.Printf("xml 序列化后：%x\n",data)
+	fmt.Printf("xml Encode：%x\n",data)
 	var obj_xml *model.Student
 	c.Decode(data,&obj_xml)
-	fmt.Println("xml 反序列化后：",obj_xml)
+	fmt.Println("xml Decode：",obj_xml)
 
 	//gob
 	c=codec.GobCodec{}
 	data,_=c.Encode(&obj)
-	fmt.Printf("gob 序列化后：%x\n",data)
+	fmt.Printf("gob Encode：%x\n",data)
 	var obj_gob *model.Student
 	c.Decode(data,&obj_gob)
-	fmt.Println("gob 反序列化后：",obj_gob)
+	fmt.Println("gob Decode：",obj_gob)
 }
 ```
 
 ### Output
 ```
-bytes 序列化后：7b
-bytes 反序列化后： [123]
-proto 序列化后：0a06e5bca0e4b88910121a09e6b19fe88b8fe79c81
-proto 反序列化后： {张三 18 江苏省 {} [] 0}
-json 序列化后：7b224e616d65223a22e5bca0e4b889222c22416765223a31382c2241646472657373223a22e6b19fe88b8fe79c81227d
-json 反序列化后： &{张三 18 江苏省}
-xml 序列化后：3c53747564656e743e3c4e616d653ee5bca0e4b8893c2f4e616d653e3c4167653e31383c2f4167653e3c416464726573733ee6b19fe88b8fe79c813c2f416464726573733e3c2f53747564656e743e
-xml 反序列化后： &{张三 18 江苏省}
-gob 序列化后：32ff810301010753747564656e7401ff8200010301044e616d65010c000103416765010400010741646472657373010c00000018ff820106e5bca0e4b88901240109e6b19fe88b8fe79c8100
-gob 反序列化后： &{张三 18 江苏省}
+bytes Encode：4d6f72742c31382c4561727468
+bytes Decode： [77 111 114 116 44 49 56 44 69 97 114 116 104]
+gogoproto Encode：0a044d6f727410121a054561727468
+gogoproto Decode： {Mort 18 Earth}
+proto Encode：0a044d6f727410121a054561727468
+proto Decode： {Mort 18 Earth {} [] 0}
+json Encode：7b224e616d65223a224d6f7274222c22416765223a31382c2241646472657373223a224561727468227d
+json Decode： &{Mort 18 Earth}
+xml Encode：3c53747564656e743e3c4e616d653e4d6f72743c2f4e616d653e3c4167653e31383c2f4167653e3c416464726573733e45617274683c2f416464726573733e3c2f53747564656e743e
+xml Decode： &{Mort 18 Earth}
+gob Encode：32ff810301010753747564656e7401ff8200010301044e616d65010c000103416765010400010741646472657373010c00000012ff8201044d6f727401240105456172746800
+gob Decode： &{Mort 18 Earth}
 ```
 
 ### Benchmark
@@ -101,23 +113,26 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: hslam.com/git/x/codec
-BenchmarkEncodeBytes-4   	500000000	         3.03 ns/op
-BenchmarkEncodeProto-4   	10000000	       156 ns/op
-BenchmarkEncodeJson-4    	 5000000	       381 ns/op
-BenchmarkEncodeXml-4     	 1000000	      2421 ns/op
-BenchmarkEncodeGob-4     	  500000	      3257 ns/op
-BenchmarkDecodeBytes-4   	30000000	        53.3 ns/op
-BenchmarkDecodeProto-4   	10000000	       184 ns/op
-BenchmarkDecodeJson-4    	 1000000	      1305 ns/op
-BenchmarkDecodeXml-4     	  300000	      5466 ns/op
-BenchmarkDecodeGob-4     	  100000	     19676 ns/op
-BenchmarkCodecBytes-4    	30000000	        55.9 ns/op
-BenchmarkCodecProto-4    	 5000000	       358 ns/op
-BenchmarkCodecJson-4     	 1000000	      1779 ns/op
-BenchmarkCodecXml-4      	  200000	      8111 ns/op
-BenchmarkCodecGob-4      	  100000	     23577 ns/op
+BenchmarkEncodeBytes-4       	500000000	         3.24 ns/op
+BenchmarkEncodeGoGoProto-4   	20000000	        79.2 ns/op
+BenchmarkEncodeProto-4       	10000000	       140 ns/op
+BenchmarkEncodeJson-4        	 5000000	       353 ns/op
+BenchmarkEncodeXml-4         	  500000	      2485 ns/op
+BenchmarkEncodeGob-4         	  500000	      3307 ns/op
+BenchmarkDecodeBytes-4       	30000000	        50.9 ns/op
+BenchmarkDecodeGoGoProto-4   	10000000	       129 ns/op
+BenchmarkDecodeProto-4       	10000000	       172 ns/op
+BenchmarkDecodeJson-4        	 1000000	      1286 ns/op
+BenchmarkDecodeXml-4         	  300000	      5550 ns/op
+BenchmarkDecodeGob-4         	  100000	     19884 ns/op
+BenchmarkCodecBytes-4        	30000000	        56.4 ns/op
+BenchmarkCodecGoGoProto-4    	10000000	       208 ns/op
+BenchmarkCodecProto-4        	 5000000	       332 ns/op
+BenchmarkCodecJson-4         	 1000000	      1682 ns/op
+BenchmarkCodecXml-4          	  200000	      8144 ns/op
+BenchmarkCodecGob-4          	  100000	     23850 ns/op
 PASS
-ok  	hslam.com/git/x/codec	28.877s
+ok  	hslam.com/git/x/codec	32.508s
 ```
 
 ### Licence
