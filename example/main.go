@@ -6,6 +6,7 @@ import (
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
 	"hslam.com/git/x/codec/example/gogopb"
+	"hslam.com/git/x/codec/example/bytes"
 )
 
 func main(){
@@ -13,13 +14,16 @@ func main(){
 	var data []byte
 
 	//bytes
-	obj_bytes:=[]byte{77, 111, 114, 116, 44, 49, 56, 44, 69, 97, 114, 116, 104}
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	obj_bytes,_:=object.Encode()
 	c=codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
 	fmt.Printf("bytes Encode：%x\n",data)
+	var object_copy =&bytes.Student{}
 	var obj_bytes_copy []byte
 	c.Decode(data,&obj_bytes_copy)
-	fmt.Println("bytes Decode：",obj_bytes_copy)
+	object_copy.Decode(obj_bytes_copy)
+	fmt.Println("bytes Decode：",object_copy)
 
 	//gogoproto
 	obj_gogopb:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}

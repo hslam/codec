@@ -31,6 +31,7 @@ import (
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
 	"hslam.com/git/x/codec/example/gogopb"
+	"hslam.com/git/x/codec/example/bytes"
 )
 
 func main(){
@@ -38,13 +39,16 @@ func main(){
 	var data []byte
 
 	//bytes
-	obj_bytes:=[]byte{77, 111, 114, 116, 44, 49, 56, 44, 69, 97, 114, 116, 104}
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	obj_bytes,_:=object.Encode()
 	c=codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
 	fmt.Printf("bytes Encode：%x\n",data)
+	var object_copy =&bytes.Student{}
 	var obj_bytes_copy []byte
 	c.Decode(data,&obj_bytes_copy)
-	fmt.Println("bytes Decode：",obj_bytes_copy)
+	object_copy.Decode(obj_bytes_copy)
+	fmt.Println("bytes Decode：",object_copy)
 
 	//gogoproto
 	obj_gogopb:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -94,8 +98,8 @@ func main(){
 
 ### Output
 ```
-bytes Encode：4d6f72742c31382c4561727468
-bytes Decode： [77 111 114 116 44 49 56 44 69 97 114 116 104]
+bytes Encode：044d6f7274124561727468
+bytes Decode： &{Mort 18 Earth}
 gogoproto Encode：0a044d6f727410121a054561727468
 gogoproto Decode： {Mort 18 Earth}
 proto Encode：0a044d6f727410121a054561727468
@@ -114,26 +118,26 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: hslam.com/git/x/codec
-BenchmarkEncodeBytes-4       	500000000	         3.24 ns/op
-BenchmarkEncodeGoGoProto-4   	20000000	        79.2 ns/op
-BenchmarkEncodeProto-4       	10000000	       140 ns/op
+BenchmarkEncodeBytes-4       	20000000	        57.7 ns/op
+BenchmarkEncodeGoGoProto-4   	20000000	        72.0 ns/op
+BenchmarkEncodeProto-4       	10000000	       143 ns/op
 BenchmarkEncodeJson-4        	 5000000	       353 ns/op
-BenchmarkEncodeXml-4         	  500000	      2485 ns/op
-BenchmarkEncodeGob-4         	  500000	      3307 ns/op
-BenchmarkDecodeBytes-4       	30000000	        50.9 ns/op
+BenchmarkEncodeXml-4         	  500000	      2586 ns/op
+BenchmarkEncodeGob-4         	  500000	      3389 ns/op
+BenchmarkDecodeBytes-4       	20000000	        87.0 ns/op
 BenchmarkDecodeGoGoProto-4   	10000000	       129 ns/op
-BenchmarkDecodeProto-4       	10000000	       172 ns/op
-BenchmarkDecodeJson-4        	 1000000	      1286 ns/op
-BenchmarkDecodeXml-4         	  300000	      5550 ns/op
-BenchmarkDecodeGob-4         	  100000	     19884 ns/op
-BenchmarkCodecBytes-4        	30000000	        56.4 ns/op
-BenchmarkCodecGoGoProto-4    	10000000	       208 ns/op
-BenchmarkCodecProto-4        	 5000000	       332 ns/op
-BenchmarkCodecJson-4         	 1000000	      1682 ns/op
-BenchmarkCodecXml-4          	  200000	      8144 ns/op
-BenchmarkCodecGob-4          	  100000	     23850 ns/op
+BenchmarkDecodeProto-4       	10000000	       175 ns/op
+BenchmarkDecodeJson-4        	 1000000	      1337 ns/op
+BenchmarkDecodeXml-4         	  300000	      5665 ns/op
+BenchmarkDecodeGob-4         	  100000	     21176 ns/op
+BenchmarkCodecBytes-4        	10000000	       156 ns/op
+BenchmarkCodecGoGoProto-4    	10000000	       239 ns/op
+BenchmarkCodecProto-4        	 5000000	       362 ns/op
+BenchmarkCodecJson-4         	 1000000	      1732 ns/op
+BenchmarkCodecXml-4          	  200000	      8030 ns/op
+BenchmarkCodecGob-4          	  100000	     25097 ns/op
 PASS
-ok  	hslam.com/git/x/codec	32.508s
+ok  	hslam.com/git/x/codec	33.779s
 ```
 
 ### Licence

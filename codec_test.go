@@ -5,13 +5,16 @@ import (
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
 	"hslam.com/git/x/codec/example/gogopb"
+	"hslam.com/git/x/codec/example/bytes"
 )
 
 func BenchmarkEncodeBytes(t *testing.B) {
-	var obj=[]byte{77, 111, 114, 116, 44, 49, 56, 44, 69, 97, 114, 116, 104}
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var obj []byte
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
+		obj,_=object.Encode()
 		c.Encode(&obj)
 	}
 }
@@ -61,13 +64,17 @@ func BenchmarkEncodeGob(t *testing.B) {
 }
 
 func BenchmarkDecodeBytes(t *testing.B) {
-	var obj=[]byte{77, 111, 114, 116, 44, 49, 56, 44, 69, 97, 114, 116, 104}
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var obj []byte
 	var c=BytesCodec{}
+	obj,_=object.Encode()
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
+		var object_copy =&bytes.Student{}
+		object_copy.Decode(data)
 	}
 }
 
@@ -126,13 +133,17 @@ func BenchmarkDecodeGob(t *testing.B) {
 }
 
 func BenchmarkCodecBytes(t *testing.B) {
-	var obj=[]byte{77, 111, 114, 116, 44, 49, 56, 44, 69, 97, 114, 116, 104}
+	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var obj []byte
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
+		obj,_=object.Encode()
 		data,_:=c.Encode(&obj)
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
+		var object_copy =&bytes.Student{}
+		object_copy.Decode(data)
 	}
 }
 
