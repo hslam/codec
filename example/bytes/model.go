@@ -10,7 +10,7 @@ type Student struct {
 	Address string
 }
 
-func (s *Student)Encode()([]byte, error)  {
+func (s *Student)Marshal()([]byte, error)  {
 	if len(s.Name)>255||len(s.Address)>255||s.Age>255{
 		return nil,errors.New("the length is  too long")
 	}
@@ -21,7 +21,7 @@ func (s *Student)Encode()([]byte, error)  {
 	copy(buffer[2+len(s.Name):], []byte(s.Address))
 	return buffer,nil
 }
-func (s *Student)Decode(data []byte) error  {
+func (s *Student)Unmarshal(data []byte) error  {
 	if len(data)<3{
 		return errors.New("the data is too short")
 	}

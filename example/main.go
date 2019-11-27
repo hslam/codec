@@ -15,15 +15,23 @@ func main(){
 
 	//bytes
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	obj_bytes,_:=object.Encode()
+	obj_bytes,_:=object.Marshal()
 	c=codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
 	fmt.Printf("bytes Encode：%x\n",data)
 	var object_copy =&bytes.Student{}
 	var obj_bytes_copy []byte
 	c.Decode(data,&obj_bytes_copy)
-	object_copy.Decode(obj_bytes_copy)
+	object_copy.Unmarshal(obj_bytes_copy)
 	fmt.Println("bytes Decode：",object_copy)
+
+	//gogopbnoreflect
+	obj_gogopbnoreflect:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_gogopbnoreflect.Marshal()
+	fmt.Printf("gogoprotonoreflect Encode：%x\n",data)
+	var obj_gogopbnoreflect_cp=gogopb.Student{}
+	obj_gogopbnoreflect_cp.Unmarshal(data)
+	fmt.Println("gogoprotonoreflect Decode：",obj_gogopbnoreflect_cp)
 
 	//gogoproto
 	obj_gogopb:=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}

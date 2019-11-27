@@ -8,13 +8,21 @@ import (
 	"hslam.com/git/x/codec/example/bytes"
 )
 
+func BenchmarkEncodeGoGoProtoNoReflect(t *testing.B) {
+	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		obj.Marshal()
+	}
+}
+
 func BenchmarkEncodeBytes(t *testing.B) {
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj,_=object.Encode()
+		obj,_=object.Marshal()
 		c.Encode(&obj)
 	}
 }
@@ -27,6 +35,7 @@ func BenchmarkEncodeGoGoProto(t *testing.B) {
 		c.Encode(&obj)
 	}
 }
+
 func BenchmarkEncodeProto(t *testing.B) {
 	var obj=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=ProtoCodec{}
@@ -62,19 +71,27 @@ func BenchmarkEncodeGob(t *testing.B) {
 		c.Encode(&obj)
 	}
 }
-
+func BenchmarkDecodeGoGoProtoNoReflect(t *testing.B) {
+	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_:=obj.Marshal()
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy =&gogopb.Student{}
+		obj_copy.Unmarshal(data)
+	}
+}
 func BenchmarkDecodeBytes(t *testing.B) {
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
 	var c=BytesCodec{}
-	obj,_=object.Encode()
+	obj,_=object.Marshal()
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
 		var object_copy =&bytes.Student{}
-		object_copy.Decode(data)
+		object_copy.Unmarshal(data)
 	}
 }
 
@@ -132,18 +149,27 @@ func BenchmarkDecodeGob(t *testing.B) {
 	}
 }
 
+func BenchmarkCodecGoGoProtoNoReflect(t *testing.B) {
+	var obj=gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=obj.Marshal()
+		var obj_copy =&gogopb.Student{}
+		obj_copy.Unmarshal(data)
+	}
+}
 func BenchmarkCodecBytes(t *testing.B) {
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj,_=object.Encode()
+		obj,_=object.Marshal()
 		data,_:=c.Encode(&obj)
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
 		var object_copy =&bytes.Student{}
-		object_copy.Decode(data)
+		object_copy.Unmarshal(data)
 	}
 }
 
