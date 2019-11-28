@@ -1,0 +1,1 @@
+gencode go -schema=model.schema -package gencode

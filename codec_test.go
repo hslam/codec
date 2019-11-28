@@ -7,6 +7,7 @@ import (
 	"hslam.com/git/x/codec/example/fastpb"
 	"hslam.com/git/x/codec/example/bytes"
 	"hslam.com/git/x/codec/example/gencode"
+	"hslam.com/git/x/codec/example/msgp"
 )
 
 func BenchmarkEncodeBytesNoReflect(t *testing.B) {
@@ -57,6 +58,24 @@ func BenchmarkEncodeFastProtoNoReflect(t *testing.B) {
 func BenchmarkEncodeFastProto(t *testing.B) {
 	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=FastProtoCodec{}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Encode(&obj)
+	}
+}
+
+func BenchmarkEncodeMsgpNoReflect(t *testing.B) {
+	buf:=make([]byte,100)
+	object:=msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		object.MarshalMsg(buf)
+	}
+}
+
+func BenchmarkEncodeMsgp(t *testing.B) {
+	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=MsgpCodec{Buffer:make([]byte,100)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
@@ -167,6 +186,27 @@ func BenchmarkDecodeFastProto(t *testing.B) {
 	}
 }
 
+func BenchmarkDecodeMsgpNoReflect(t *testing.B) {
+	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_:=obj.MarshalMsg(nil)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy =&msgp.Student{}
+		obj_copy.UnmarshalMsg(data)
+	}
+}
+
+func BenchmarkDecodeMsgp(t *testing.B) {
+	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=MsgpCodec{}
+	data,_:=c.Encode(&obj)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy msgp.Student
+		c.Decode(data,&obj_copy)
+	}
+}
+
 func BenchmarkDecodeProto(t *testing.B) {
 	var obj=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=ProtoCodec{}
@@ -269,8 +309,6 @@ func BenchmarkCodecFastProtoNoReflect(t *testing.B) {
 	}
 }
 
-
-
 func BenchmarkCodecFastProto(t *testing.B) {
 	var obj= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=FastProtoCodec{}
@@ -278,6 +316,28 @@ func BenchmarkCodecFastProto(t *testing.B) {
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)
 		var obj_copy fastpb.Student
+		c.Decode(data,&obj_copy)
+	}
+}
+
+func BenchmarkCodecMsgpNoReflect(t *testing.B) {
+	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	buf:=make([]byte,100)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=obj.MarshalMsg(buf)
+		var obj_copy =&msgp.Student{}
+		obj_copy.UnmarshalMsg(data)
+	}
+}
+
+func BenchmarkCodecMsgp(t *testing.B) {
+	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=MsgpCodec{Buffer:make([]byte,100)}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=c.Encode(&obj)
+		var obj_copy msgp.Student
 		c.Decode(data,&obj_copy)
 	}
 }

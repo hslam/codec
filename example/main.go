@@ -8,6 +8,7 @@ import (
 	"hslam.com/git/x/codec/example/bytes"
 	"hslam.com/git/x/codec/example/fastpb"
 	"hslam.com/git/x/codec/example/gencode"
+	"hslam.com/git/x/codec/example/msgp"
 )
 
 func main(){
@@ -37,19 +38,19 @@ func main(){
 	//gencode_noreflect
 	obj_gencode_noreflect:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
 	data,_=obj_gencode_noreflect.Marshal(nil)
-	fmt.Printf("obj_gencode_noreflect Encode：%x\n",data)
+	fmt.Printf("gencode_noreflect Encode：%x\n",data)
 	var obj_gencode_noreflect_cp=&gencode.Student{}
 	obj_gencode_noreflect_cp.Unmarshal(data)
-	fmt.Println("obj_gencode_noreflect Decode：",obj_gencode_noreflect_cp)
+	fmt.Println("gencode_noreflect Decode：",obj_gencode_noreflect_cp)
 
 	//gencode
 	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
 	c=codec.GencodeCodec{}
 	data,_=c.Encode(&obj_gencode)
-	fmt.Printf("obj_gencode Encode：%x\n",data)
+	fmt.Printf("gencode Encode：%x\n",data)
 	var obj_gencode_cp gencode.Student
 	c.Decode(data,&obj_gencode_cp)
-	fmt.Println("obj_gencode Decode：",obj_gencode_cp)
+	fmt.Println("gencode Decode：",obj_gencode_cp)
 
 	//fastpb_noreflect
 	obj_fastpb_noreflect:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -67,6 +68,23 @@ func main(){
 	var obj_fastpb_cp fastpb.Student
 	c.Decode(data,&obj_fastpb_cp)
 	fmt.Println("fastproto Decode：",obj_fastpb_cp)
+
+	//msgp_noreflect
+	obj_msgp_noreflect:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_msgp_noreflect.MarshalMsg(nil)
+	fmt.Printf("msgp_noreflect Encode：%x\n",data)
+	var obj_msgp_noreflect_cp=&msgp.Student{}
+	obj_msgp_noreflect_cp.UnmarshalMsg(data)
+	fmt.Println("msgp_noreflect Decode：",obj_msgp_noreflect_cp)
+
+	//msgp
+	obj_msgp:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.MsgpCodec{}
+	data,_=c.Encode(&obj_msgp)
+	fmt.Printf("msgp Encode：%x\n",data)
+	var obj_msgp_cp msgp.Student
+	c.Decode(data,&obj_msgp_cp)
+	fmt.Println("msgp Decode：",obj_msgp_cp)
 
 	//proto
 	obj_pb:=pb.Student{Name:"Mort",Age:18,Address:"Earth"}

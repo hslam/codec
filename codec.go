@@ -107,3 +107,21 @@ func (c GencodeCodec) Decode(data []byte, v interface{}) error {
 	_,err:=v.(gen).Unmarshal(data)
 	return err
 }
+
+type msgpack interface {
+	MarshalMsg(buf []byte) ([]byte, error)
+	UnmarshalMsg(bts []byte) (o []byte, err error)
+}
+
+type MsgpCodec struct{
+	Buffer []byte
+}
+
+func (c MsgpCodec) Encode(v interface{}) ([]byte, error) {
+	return v.(msgpack).MarshalMsg(c.Buffer)
+}
+
+func (c MsgpCodec) Decode(data []byte, v interface{}) error {
+	_,err:=v.(msgpack).UnmarshalMsg(data)
+	return err
+}
