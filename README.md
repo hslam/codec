@@ -3,9 +3,10 @@ A codec library written in golang.
 
 ## Feature
 * bytes
-* gencode
-* fastproto
-* proto
+* [gencode](https://github.com/andyleap/gencode "gencode")
+* [fastproto](https://github.com/gogo/protobuf "fastproto")
+* [msgp](https://github.com/tinylib/msgp "msgp")
+* [proto](github.com/golang/protobuf "proto")
 * json
 * xml
 * gob
