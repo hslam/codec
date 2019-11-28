@@ -17,7 +17,7 @@ func main(){
 
 	//bytes_noreflect
 	object_noreflect:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=object_noreflect.Marshal()
+	data,_=object_noreflect.Marshal(nil)
 	fmt.Printf("bytes_noreflect Encode：%x\n",data)
 	var object_noreflect_copy =&bytes.Student{}
 	object_noreflect_copy.Unmarshal(data)
@@ -25,7 +25,7 @@ func main(){
 
 	//bytes
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	obj_bytes,_:=object.Marshal()
+	obj_bytes,_:=object.Marshal(nil)
 	c=codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
 	fmt.Printf("bytes Encode：%x\n",data)

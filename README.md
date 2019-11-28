@@ -184,44 +184,44 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: hslam.com/git/x/codec
-BenchmarkEncodeBytesNoReflect-4       	50000000	        22.7 ns/op
-BenchmarkEncodeBytes-4                	100000000	        23.6 ns/op
-BenchmarkEncodeGencodeNoReflect-4     	100000000	        15.3 ns/op
-BenchmarkEncodeGencode-4              	50000000	        25.0 ns/op
-BenchmarkEncodeFastProtoNoReflect-4   	30000000	        49.2 ns/op
-BenchmarkEncodeFastProto-4            	20000000	        84.4 ns/op
-BenchmarkEncodeMsgpNoReflect-4        	20000000	        83.8 ns/op
-BenchmarkEncodeMsgp-4                 	20000000	        97.7 ns/op
-BenchmarkEncodeProto-4                	10000000	       155 ns/op
-BenchmarkEncodeJson-4                 	 5000000	       355 ns/op
-BenchmarkEncodeXml-4                  	  500000	      2622 ns/op
-BenchmarkEncodeGob-4                  	  500000	      3419 ns/op
-BenchmarkDecodeBytesNoReflect-4       	50000000	        35.3 ns/op
-BenchmarkDecodeBytes-4                	30000000	        55.0 ns/op
-BenchmarkDecodeGencodeNoReflect-4     	30000000	        43.1 ns/op
-BenchmarkDecodeGencode-4              	20000000	        88.9 ns/op
-BenchmarkDecodeFastProtoNoReflect-4   	30000000	        52.6 ns/op
-BenchmarkDecodeFastProto-4            	10000000	       137 ns/op
-BenchmarkDecodeMsgpNoReflect-4        	20000000	       101 ns/op
-BenchmarkDecodeMsgp-4                 	10000000	       153 ns/op
-BenchmarkDecodeProto-4                	10000000	       171 ns/op
-BenchmarkDecodeJson-4                 	 1000000	      1250 ns/op
-BenchmarkDecodeXml-4                  	  300000	      5243 ns/op
-BenchmarkDecodeGob-4                  	  100000	     19529 ns/op
-BenchmarkCodecBytesNoReflect-4        	30000000	        57.3 ns/op
-BenchmarkCodecBytes-4                 	20000000	        76.8 ns/op
-BenchmarkCodecGencodeNoReflect-4      	20000000	        59.9 ns/op
-BenchmarkCodecGencode-4               	10000000	       127 ns/op
-BenchmarkCodecFastProtoNoReflect-4    	20000000	       111 ns/op
-BenchmarkCodecFastProto-4             	10000000	       228 ns/op
-BenchmarkCodecMsgpNoReflect-4         	10000000	       194 ns/op
+BenchmarkEncodeBytesNoReflect-4       	100000000	        20.8 ns/op
+BenchmarkEncodeBytes-4                	100000000	        22.0 ns/op
+BenchmarkEncodeGencodeNoReflect-4     	100000000	        15.1 ns/op
+BenchmarkEncodeGencode-4              	50000000	        25.9 ns/op
+BenchmarkEncodeFastProtoNoReflect-4   	30000000	        48.7 ns/op
+BenchmarkEncodeFastProto-4            	20000000	        82.4 ns/op
+BenchmarkEncodeMsgpNoReflect-4        	20000000	        82.6 ns/op
+BenchmarkEncodeMsgp-4                 	20000000	        99.0 ns/op
+BenchmarkEncodeProto-4                	10000000	       140 ns/op
+BenchmarkEncodeJson-4                 	 5000000	       346 ns/op
+BenchmarkEncodeXml-4                  	  500000	      2459 ns/op
+BenchmarkEncodeGob-4                  	  500000	      3273 ns/op
+BenchmarkDecodeBytesNoReflect-4       	50000000	        34.7 ns/op
+BenchmarkDecodeBytes-4                	30000000	        53.3 ns/op
+BenchmarkDecodeGencodeNoReflect-4     	30000000	        43.0 ns/op
+BenchmarkDecodeGencode-4              	20000000	        88.1 ns/op
+BenchmarkDecodeFastProtoNoReflect-4   	30000000	        53.4 ns/op
+BenchmarkDecodeFastProto-4            	10000000	       134 ns/op
+BenchmarkDecodeMsgpNoReflect-4        	20000000	        96.4 ns/op
+BenchmarkDecodeMsgp-4                 	10000000	       152 ns/op
+BenchmarkDecodeProto-4                	10000000	       170 ns/op
+BenchmarkDecodeJson-4                 	 1000000	      1251 ns/op
+BenchmarkDecodeXml-4                  	  300000	      5251 ns/op
+BenchmarkDecodeGob-4                  	  100000	     19665 ns/op
+BenchmarkCodecBytesNoReflect-4        	30000000	        55.4 ns/op
+BenchmarkCodecBytes-4                 	20000000	        73.5 ns/op
+BenchmarkCodecGencodeNoReflect-4      	20000000	        58.4 ns/op
+BenchmarkCodecGencode-4               	10000000	       129 ns/op
+BenchmarkCodecFastProtoNoReflect-4    	20000000	       105 ns/op
+BenchmarkCodecFastProto-4             	10000000	       223 ns/op
+BenchmarkCodecMsgpNoReflect-4         	10000000	       197 ns/op
 BenchmarkCodecMsgp-4                  	 5000000	       269 ns/op
-BenchmarkCodecProto-4                 	 5000000	       341 ns/op
-BenchmarkCodecJson-4                  	 1000000	      1715 ns/op
-BenchmarkCodecXml-4                   	  200000	      8080 ns/op
-BenchmarkCodecGob-4                   	   50000	     23491 ns/op
+BenchmarkCodecProto-4                 	 5000000	       331 ns/op
+BenchmarkCodecJson-4                  	 1000000	      1700 ns/op
+BenchmarkCodecXml-4                   	  200000	      8235 ns/op
+BenchmarkCodecGob-4                   	   50000	     23655 ns/op
 PASS
-ok  	hslam.com/git/x/codec	62.745s
+ok  	hslam.com/git/x/codec	62.621s
 ```
 
 ### Licence

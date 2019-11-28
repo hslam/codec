@@ -11,20 +11,22 @@ import (
 )
 
 func BenchmarkEncodeBytesNoReflect(t *testing.B) {
+	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		object.Marshal()
+		object.Marshal(buf)
 	}
 }
 
 func BenchmarkEncodeBytes(t *testing.B) {
+	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj,_=object.Marshal()
+		obj,_=object.Marshal(buf)
 		c.Encode(&obj)
 	}
 }
@@ -119,9 +121,10 @@ func BenchmarkEncodeGob(t *testing.B) {
 }
 
 func BenchmarkDecodeBytesNoReflect(t *testing.B) {
+	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var data []byte
-	data,_=object.Marshal()
+	data,_=object.Marshal(buf)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		var object_copy =&bytes.Student{}
@@ -130,10 +133,11 @@ func BenchmarkDecodeBytesNoReflect(t *testing.B) {
 }
 
 func BenchmarkDecodeBytes(t *testing.B) {
+	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
 	var c=BytesCodec{}
-	obj,_=object.Marshal()
+	obj,_=object.Marshal(buf)
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
@@ -252,23 +256,25 @@ func BenchmarkDecodeGob(t *testing.B) {
 }
 
 func BenchmarkCodecBytesNoReflect(t *testing.B) {
+	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var data []byte
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_=object.Marshal()
+		data,_=object.Marshal(buf)
 		var object_copy =&bytes.Student{}
 		object_copy.Unmarshal(data)
 	}
 }
 
 func BenchmarkCodecBytes(t *testing.B) {
+	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj,_=object.Marshal()
+		obj,_=object.Marshal(buf)
 		data,_:=c.Encode(&obj)
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
