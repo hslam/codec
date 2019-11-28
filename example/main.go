@@ -14,7 +14,6 @@ import (
 func main(){
 	var c codec.Codec
 	var data []byte
-
 	//bytes_noreflect
 	object_noreflect:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	data,_=object_noreflect.Marshal(nil)

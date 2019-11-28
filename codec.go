@@ -74,8 +74,7 @@ func (c BytesCodec) Encode(v interface{}) ([]byte, error) {
 }
 
 func (c BytesCodec) Decode(data []byte, v interface{}) error {
-	*v.(*[]byte)=make([]byte ,len(data))
-	copy(*v.(*[]byte),data)
+	*v.(*[]byte)=data
 	return nil
 }
 
