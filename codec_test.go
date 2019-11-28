@@ -10,6 +10,15 @@ import (
 	"hslam.com/git/x/codec/example/msgp"
 )
 
+func BenchmarkEncodeOnlyBytes(t *testing.B) {
+	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
+	var c=BytesCodec{}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Encode(&obj)
+	}
+}
+
 func BenchmarkEncodeBytesNoReflect(t *testing.B) {
 	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -117,6 +126,17 @@ func BenchmarkEncodeGob(t *testing.B) {
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
+	}
+}
+
+func BenchmarkDecodeOnlyBytes(t *testing.B) {
+	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
+	var c=BytesCodec{}
+	data,_:=c.Encode(&obj)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy []byte
+		c.Decode(data,&obj_copy)
 	}
 }
 
@@ -251,6 +271,17 @@ func BenchmarkDecodeGob(t *testing.B) {
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		var obj_copy *model.Student
+		c.Decode(data,&obj_copy)
+	}
+}
+
+func BenchmarkCodecOnlyBytes(t *testing.B) {
+	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
+	var c=BytesCodec{}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=c.Encode(&obj)
+		var obj_copy []byte
 		c.Decode(data,&obj_copy)
 	}
 }
