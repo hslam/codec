@@ -1,5 +1,6 @@
 package bytes
 
+import "errors"
 
 var buf []byte
 func init() {
@@ -14,6 +15,9 @@ type Student struct {
 func (s *Student)Marshal()([]byte, error)  {
 	name_length:=len(s.Name)
 	address_length:=len(s.Address)
+	if (name_length>255||address_length>255||s.Age>255){
+		return nil,errors.New("too big")
+	}
 	length:=2+name_length+address_length
 	var buffer=buf
 	if cap(buffer) >= length {
@@ -28,6 +32,9 @@ func (s *Student)Marshal()([]byte, error)  {
 	return buffer,nil
 }
 func (s *Student)Unmarshal(data []byte) error  {
+	if (len(data)<3){
+		return errors.New("too short")
+	}
 	name_length:=int(data[0])
 	s.Name=string(data[1:1+name_length])
 	s.Age=int32(data[1+name_length])
