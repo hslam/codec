@@ -1,16 +1,21 @@
 package codec
 
+type CodecPool interface {
+	Get()(Codec)
+	Put(c Codec)
+}
+
 type JsonCodecPool struct {
-	c chan *JsonCodec
+	c chan Codec
 }
 
 func NewJsonCodecPool(total int) (*JsonCodecPool) {
 	return &JsonCodecPool{
-		c: make(chan *JsonCodec, total),
+		c: make(chan Codec, total),
 	}
 }
 
-func (cp *JsonCodecPool) Get() (c *JsonCodec) {
+func (cp *JsonCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -19,7 +24,7 @@ func (cp *JsonCodecPool) Get() (c *JsonCodec) {
 	return
 }
 
-func (cp *JsonCodecPool) Put(c *JsonCodec) {
+func (cp *JsonCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
@@ -27,16 +32,16 @@ func (cp *JsonCodecPool) Put(c *JsonCodec) {
 }
 
 type ProtoCodecPool struct {
-	c chan *ProtoCodec
+	c chan Codec
 }
 
 func NewProtoCodecPool(total int) (*ProtoCodecPool) {
 	return &ProtoCodecPool{
-		c: make(chan *ProtoCodec, total),
+		c: make(chan Codec, total),
 	}
 }
 
-func (cp *ProtoCodecPool) Get() (c *ProtoCodec) {
+func (cp *ProtoCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -45,25 +50,24 @@ func (cp *ProtoCodecPool) Get() (c *ProtoCodec) {
 	return
 }
 
-func (cp *ProtoCodecPool) Put(c *ProtoCodec) {
+func (cp *ProtoCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
 	}
 }
 
-
 type XmlCodecPool struct {
-	c chan *XmlCodec
+	c chan Codec
 }
 
 func NewXmlCodecPool(total int) (*XmlCodecPool) {
 	return &XmlCodecPool{
-		c: make(chan *XmlCodec, total),
+		c: make(chan Codec, total),
 	}
 }
 
-func (cp *XmlCodecPool) Get() (c *XmlCodec) {
+func (cp *XmlCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -72,7 +76,7 @@ func (cp *XmlCodecPool) Get() (c *XmlCodec) {
 	return
 }
 
-func (cp *XmlCodecPool) Put(c *XmlCodec) {
+func (cp *XmlCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
@@ -81,16 +85,16 @@ func (cp *XmlCodecPool) Put(c *XmlCodec) {
 
 
 type GobCodecPool struct {
-	c chan *GobCodec
+	c chan Codec
 }
 
 func NewGobCodecPool(total int) (*GobCodecPool) {
 	return &GobCodecPool{
-		c: make(chan *GobCodec, total),
+		c: make(chan Codec, total),
 	}
 }
 
-func (cp *GobCodecPool) Get() (c *GobCodec) {
+func (cp *GobCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -99,7 +103,7 @@ func (cp *GobCodecPool) Get() (c *GobCodec) {
 	return
 }
 
-func (cp *GobCodecPool) Put(c *GobCodec) {
+func (cp *GobCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
@@ -108,16 +112,16 @@ func (cp *GobCodecPool) Put(c *GobCodec) {
 
 
 type BytesCodecPool struct {
-	c chan *BytesCodec
+	c chan Codec
 }
 
 func NewBytesCodecPool(total int) (*BytesCodecPool) {
 	return &BytesCodecPool{
-		c: make(chan *BytesCodec, total),
+		c: make(chan Codec, total),
 	}
 }
 
-func (cp *BytesCodecPool) Get() (c *BytesCodec) {
+func (cp *BytesCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -126,25 +130,24 @@ func (cp *BytesCodecPool) Get() (c *BytesCodec) {
 	return
 }
 
-func (cp *BytesCodecPool) Put(c *BytesCodec) {
+func (cp *BytesCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
 	}
 }
 
-
 type GogoProtoCodecPool struct {
-	c chan *GogoProtoCodec
+	c chan Codec
 }
 
 func NewGogoProtoCodecPool(total int) (*GogoProtoCodecPool) {
 	return &GogoProtoCodecPool{
-		c: make(chan *GogoProtoCodec, total),
+		c: make(chan Codec, total),
 	}
 }
 
-func (cp *GogoProtoCodecPool) Get() (c *GogoProtoCodec) {
+func (cp *GogoProtoCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -153,7 +156,7 @@ func (cp *GogoProtoCodecPool) Get() (c *GogoProtoCodec) {
 	return
 }
 
-func (cp *GogoProtoCodecPool) Put(c *GogoProtoCodec) {
+func (cp *GogoProtoCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
@@ -161,18 +164,18 @@ func (cp *GogoProtoCodecPool) Put(c *GogoProtoCodec) {
 }
 
 type GencodeCodecPool struct {
-	c chan *GencodeCodec
+	c chan Codec
 	w int
 }
 
 func NewGencodeCodecPool(total int, width int) (*GencodeCodecPool) {
 	return &GencodeCodecPool{
-		c: make(chan *GencodeCodec, total),
+		c: make(chan Codec, total),
 		w: width,
 	}
 }
 
-func (cp *GencodeCodecPool) Get() (c *GencodeCodec) {
+func (cp *GencodeCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -185,7 +188,7 @@ func (cp *GencodeCodecPool) Get() (c *GencodeCodec) {
 	return
 }
 
-func (cp *GencodeCodecPool) Put(c *GencodeCodec) {
+func (cp *GencodeCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
@@ -193,18 +196,18 @@ func (cp *GencodeCodecPool) Put(c *GencodeCodec) {
 }
 
 type MsgpCodecPool struct {
-	c chan *MsgpCodec
+	c chan Codec
 	w int
 }
 
 func NewMsgpCodecPool(total int, width int) (*MsgpCodecPool) {
 	return &MsgpCodecPool{
-		c: make(chan *MsgpCodec, total),
+		c: make(chan Codec, total),
 		w: width,
 	}
 }
 
-func (cp *MsgpCodecPool) Get() (c *MsgpCodec) {
+func (cp *MsgpCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
@@ -217,7 +220,7 @@ func (cp *MsgpCodecPool) Get() (c *MsgpCodec) {
 	return
 }
 
-func (cp *MsgpCodecPool) Put(c *MsgpCodec) {
+func (cp *MsgpCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:

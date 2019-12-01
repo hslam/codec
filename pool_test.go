@@ -10,8 +10,9 @@ import (
 )
 
 func TestBytesCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
-	p:=NewBytesCodecPool(10)
+	p=NewBytesCodecPool(1024)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy []byte
@@ -20,8 +21,9 @@ func TestBytesCodecPool(t *testing.T) {
 }
 
 func TestGencodeCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewGencodeCodecPool(10,0)
+	p=NewGencodeCodecPool(1024,65536)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =gencode.Student{}
@@ -30,8 +32,9 @@ func TestGencodeCodecPool(t *testing.T) {
 }
 
 func TestGogoProtoCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewGogoProtoCodecPool(10)
+	p=NewGogoProtoCodecPool(1024)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =gogopb.Student{}
@@ -40,8 +43,9 @@ func TestGogoProtoCodecPool(t *testing.T) {
 }
 
 func TestMsgpCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewMsgpCodecPool(10,0)
+	p=NewMsgpCodecPool(1024,65536)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =msgp.Student{}
@@ -50,8 +54,9 @@ func TestMsgpCodecPool(t *testing.T) {
 }
 
 func TestProtoCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewProtoCodecPool(10)
+	p=NewProtoCodecPool(1024)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =pb.Student{}
@@ -60,8 +65,9 @@ func TestProtoCodecPool(t *testing.T) {
 }
 
 func TestJsonCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj=model.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewJsonCodecPool(10)
+	p=NewJsonCodecPool(1024)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =model.Student{}
@@ -70,8 +76,9 @@ func TestJsonCodecPool(t *testing.T) {
 }
 
 func TestXmlCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj=model.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewXmlCodecPool(10)
+	p=NewXmlCodecPool(1024)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =model.Student{}
@@ -80,8 +87,9 @@ func TestXmlCodecPool(t *testing.T) {
 }
 
 func TestGobCodecPool(t *testing.T) {
+	var p CodecPool
 	var obj=model.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p:=NewGobCodecPool(10)
+	p=NewGobCodecPool(1024)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =model.Student{}
