@@ -1,0 +1,8 @@
+syntax = "proto3";
+package gogopb;
+
+message Student {
+    string Name = 1;
+    int32 Age = 2;
+    string Address = 3;
+}
