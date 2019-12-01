@@ -25,7 +25,7 @@ func main(){
 	//bytes
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	obj_bytes,_:=object.Marshal(nil)
-	c=codec.BytesCodec{}
+	c=&codec.BytesCodec{}
 	data,_=c.Encode(&obj_bytes)
 	fmt.Printf("bytes Encode：%x\n",data)
 	var object_copy =&bytes.Student{}
@@ -44,7 +44,7 @@ func main(){
 
 	//gencode
 	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=codec.GencodeCodec{}
+	c=&codec.GencodeCodec{}
 	data,_=c.Encode(&obj_gencode)
 	fmt.Printf("gencode Encode：%x\n",data)
 	var obj_gencode_cp gencode.Student
@@ -61,7 +61,7 @@ func main(){
 
 	//gogoproto
 	obj_gogopb:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=codec.GogoProtoCodec{}
+	c=&codec.GogoProtoCodec{}
 	data,_=c.Encode(&obj_gogopb)
 	fmt.Printf("gogoproto Encode：%x\n",data)
 	var obj_gogopb_cp gogopb.Student
@@ -78,7 +78,7 @@ func main(){
 
 	//msgp
 	obj_msgp:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=codec.MsgpCodec{}
+	c=&codec.MsgpCodec{}
 	data,_=c.Encode(&obj_msgp)
 	fmt.Printf("msgp Encode：%x\n",data)
 	var obj_msgp_cp msgp.Student
@@ -87,7 +87,7 @@ func main(){
 
 	//proto
 	obj_pb:=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=codec.ProtoCodec{}
+	c=&codec.ProtoCodec{}
 	data,_=c.Encode(&obj_pb)
 	fmt.Printf("proto Encode：%x\n",data)
 	var obj_pb_cp pb.Student
@@ -97,7 +97,7 @@ func main(){
 	var obj=&model.Student{Name:"Mort",Age:18,Address:"Earth"}
 
 	//json
-	c=codec.JsonCodec{}
+	c=&codec.JsonCodec{}
 	data,_=c.Encode(&obj)
 	fmt.Printf("json Encode：%x\n",data)
 	var obj_json *model.Student
@@ -105,7 +105,7 @@ func main(){
 	fmt.Println("json Decode：",obj_json)
 
 	//xml
-	c=codec.XmlCodec{}
+	c=&codec.XmlCodec{}
 	data,_=c.Encode(&obj)
 	fmt.Printf("xml Encode：%x\n",data)
 	var obj_xml *model.Student
@@ -113,7 +113,7 @@ func main(){
 	fmt.Println("xml Decode：",obj_xml)
 
 	//gob
-	c=codec.GobCodec{}
+	c=&codec.GobCodec{}
 	data,_=c.Encode(&obj)
 	fmt.Printf("gob Encode：%x\n",data)
 	var obj_gob *model.Student
