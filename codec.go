@@ -2,7 +2,7 @@ package codec
 
 import (
 	"github.com/golang/protobuf/proto"
-	fastproto "github.com/gogo/protobuf/proto"
+	gogoproto "github.com/gogo/protobuf/proto"
 	"encoding/json"
 	"encoding/xml"
 	"encoding/gob"
@@ -78,15 +78,15 @@ func (c BytesCodec) Decode(data []byte, v interface{}) error {
 	return nil
 }
 
-type FastProtoCodec struct{
+type GogoProtoCodec struct{
 }
 
-func (c FastProtoCodec) Encode(v interface{}) ([]byte, error) {
-	return fastproto.Marshal(v.(proto.Message))
+func (c GogoProtoCodec) Encode(v interface{}) ([]byte, error) {
+	return gogoproto.Marshal(v.(proto.Message))
 }
 
-func (c FastProtoCodec) Decode(data []byte, v interface{}) error {
-	return fastproto.Unmarshal(data, v.(proto.Message))
+func (c GogoProtoCodec) Decode(data []byte, v interface{}) error {
+	return gogoproto.Unmarshal(data, v.(proto.Message))
 }
 
 type gen interface {

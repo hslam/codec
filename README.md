@@ -4,7 +4,7 @@ A codec library written in golang.
 ## Feature
 * bytes
 * [gencode](https://github.com/andyleap/gencode "gencode")
-* [fastproto](https://github.com/gogo/protobuf "fastproto")
+* [gogoproto](https://github.com/gogo/protobuf "gogoproto")
 * [msgp](https://github.com/tinylib/msgp "msgp")
 * [proto](github.com/golang/protobuf "proto")
 * json
@@ -33,7 +33,7 @@ import (
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
 	"hslam.com/git/x/codec/example/bytes"
-	"hslam.com/git/x/codec/example/fastpb"
+	"hslam.com/git/x/codec/example/gogopb"
 	"hslam.com/git/x/codec/example/gencode"
 	"hslam.com/git/x/codec/example/msgp"
 )
@@ -79,22 +79,22 @@ func main(){
 	c.Decode(data,&obj_gencode_cp)
 	fmt.Println("gencode Decode：",obj_gencode_cp)
 
-	//fastpb_noreflect
-	obj_fastpb_noreflect:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_fastpb_noreflect.Marshal()
-	fmt.Printf("fastproto_noreflect Encode：%x\n",data)
-	var obj_fastpb_noreflect_cp= fastpb.Student{}
-	obj_fastpb_noreflect_cp.Unmarshal(data)
-	fmt.Println("fastproto_noreflect Decode：",obj_fastpb_noreflect_cp)
+	//gogopb_noreflect
+	obj_gogopb_noreflect:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_gogopb_noreflect.Marshal()
+	fmt.Printf("gogoproto_noreflect Encode：%x\n",data)
+	var obj_gogopb_noreflect_cp= gogopb.Student{}
+	obj_gogopb_noreflect_cp.Unmarshal(data)
+	fmt.Println("gogoproto_noreflect Decode：",obj_gogopb_noreflect_cp)
 
-	//fastproto
-	obj_fastpb:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=codec.FastProtoCodec{}
-	data,_=c.Encode(&obj_fastpb)
-	fmt.Printf("fastproto Encode：%x\n",data)
-	var obj_fastpb_cp fastpb.Student
-	c.Decode(data,&obj_fastpb_cp)
-	fmt.Println("fastproto Decode：",obj_fastpb_cp)
+	//gogoproto
+	obj_gogopb:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.GogoProtoCodec{}
+	data,_=c.Encode(&obj_gogopb)
+	fmt.Printf("gogoproto Encode：%x\n",data)
+	var obj_gogopb_cp gogopb.Student
+	c.Decode(data,&obj_gogopb_cp)
+	fmt.Println("gogoproto Decode：",obj_gogopb_cp)
 
 	//msgp_noreflect
 	obj_msgp_noreflect:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -160,10 +160,10 @@ gencode_noreflect Encode：044d6f727412000000054561727468
 gencode_noreflect Decode： &{Mort 18 Earth}
 gencode Encode：044d6f727412000000054561727468
 gencode Decode： {Mort 18 Earth}
-fastproto_noreflect Encode：0a044d6f727410121a054561727468
-fastproto_noreflect Decode： {Mort 18 Earth}
-fastproto Encode：0a044d6f727410121a054561727468
-fastproto Decode： {Mort 18 Earth}
+gogoproto_noreflect Encode：0a044d6f727410121a054561727468
+gogoproto_noreflect Decode： {Mort 18 Earth}
+gogoproto Encode：0a044d6f727410121a054561727468
+gogoproto Decode： {Mort 18 Earth}
 msgp_noreflect Encode：83a44e616d65a44d6f7274a341676512a741646472657373a54561727468
 msgp_noreflect Decode： &{Mort 18 Earth}
 msgp Encode：83a44e616d65a44d6f7274a341676512a741646472657373a54561727468
@@ -189,8 +189,8 @@ BenchmarkEncodeBytesNoReflect-4       	100000000	        21.0 ns/op
 BenchmarkEncodeBytes-4                	100000000	        22.2 ns/op
 BenchmarkEncodeGencodeNoReflect-4     	100000000	        15.2 ns/op
 BenchmarkEncodeGencode-4              	50000000	        25.2 ns/op
-BenchmarkEncodeFastProtoNoReflect-4   	30000000	        49.6 ns/op
-BenchmarkEncodeFastProto-4            	20000000	        82.3 ns/op
+BenchmarkEncodeGogoProtoNoReflect-4   	30000000	        49.6 ns/op
+BenchmarkEncodeGogoProto-4            	20000000	        82.3 ns/op
 BenchmarkEncodeMsgpNoReflect-4        	20000000	        84.2 ns/op
 BenchmarkEncodeMsgp-4                 	20000000	        97.8 ns/op
 BenchmarkEncodeProto-4                	10000000	       139 ns/op
@@ -202,8 +202,8 @@ BenchmarkDecodeBytesNoReflect-4       	50000000	        34.7 ns/op
 BenchmarkDecodeBytes-4                	50000000	        35.9 ns/op
 BenchmarkDecodeGencodeNoReflect-4     	30000000	        44.8 ns/op
 BenchmarkDecodeGencode-4              	20000000	        91.2 ns/op
-BenchmarkDecodeFastProtoNoReflect-4   	30000000	        54.0 ns/op
-BenchmarkDecodeFastProto-4            	10000000	       137 ns/op
+BenchmarkDecodeGogoProtoNoReflect-4   	30000000	        54.0 ns/op
+BenchmarkDecodeGogoProto-4            	10000000	       137 ns/op
 BenchmarkDecodeMsgpNoReflect-4        	20000000	        98.1 ns/op
 BenchmarkDecodeMsgp-4                 	10000000	       156 ns/op
 BenchmarkDecodeProto-4                	10000000	       174 ns/op
@@ -215,8 +215,8 @@ BenchmarkCodecBytesNoReflect-4        	30000000	        55.5 ns/op
 BenchmarkCodecBytes-4                 	30000000	        56.7 ns/op
 BenchmarkCodecGencodeNoReflect-4      	20000000	        58.4 ns/op
 BenchmarkCodecGencode-4               	10000000	       123 ns/op
-BenchmarkCodecFastProtoNoReflect-4    	20000000	       108 ns/op
-BenchmarkCodecFastProto-4             	10000000	       225 ns/op
+BenchmarkCodecGogoProtoNoReflect-4    	20000000	       108 ns/op
+BenchmarkCodecGogoProto-4             	10000000	       225 ns/op
 BenchmarkCodecMsgpNoReflect-4         	10000000	       198 ns/op
 BenchmarkCodecMsgp-4                  	 5000000	       269 ns/op
 BenchmarkCodecProto-4                 	 5000000	       328 ns/op

@@ -6,9 +6,9 @@ import (
 	"hslam.com/git/x/codec/example/model"
 	"hslam.com/git/x/codec/example/pb"
 	"hslam.com/git/x/codec/example/bytes"
-	"hslam.com/git/x/codec/example/fastpb"
 	"hslam.com/git/x/codec/example/gencode"
 	"hslam.com/git/x/codec/example/msgp"
+	"hslam.com/git/x/codec/example/gogopb"
 )
 
 func main(){
@@ -51,22 +51,22 @@ func main(){
 	c.Decode(data,&obj_gencode_cp)
 	fmt.Println("gencode Decode：",obj_gencode_cp)
 
-	//fastpb_noreflect
-	obj_fastpb_noreflect:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_fastpb_noreflect.Marshal()
-	fmt.Printf("fastproto_noreflect Encode：%x\n",data)
-	var obj_fastpb_noreflect_cp= fastpb.Student{}
-	obj_fastpb_noreflect_cp.Unmarshal(data)
-	fmt.Println("fastproto_noreflect Decode：",obj_fastpb_noreflect_cp)
+	//gogopb_noreflect
+	obj_gogopb_noreflect:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_=obj_gogopb_noreflect.Marshal()
+	fmt.Printf("gogoproto_noreflect Encode：%x\n",data)
+	var obj_gogopb_noreflect_cp= gogopb.Student{}
+	obj_gogopb_noreflect_cp.Unmarshal(data)
+	fmt.Println("gogoproto_noreflect Decode：",obj_gogopb_noreflect_cp)
 
-	//fastproto
-	obj_fastpb:= fastpb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=codec.FastProtoCodec{}
-	data,_=c.Encode(&obj_fastpb)
-	fmt.Printf("fastproto Encode：%x\n",data)
-	var obj_fastpb_cp fastpb.Student
-	c.Decode(data,&obj_fastpb_cp)
-	fmt.Println("fastproto Decode：",obj_fastpb_cp)
+	//gogoproto
+	obj_gogopb:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+	c=codec.GogoProtoCodec{}
+	data,_=c.Encode(&obj_gogopb)
+	fmt.Printf("gogoproto Encode：%x\n",data)
+	var obj_gogopb_cp gogopb.Student
+	c.Decode(data,&obj_gogopb_cp)
+	fmt.Println("gogoproto Decode：",obj_gogopb_cp)
 
 	//msgp_noreflect
 	obj_msgp_noreflect:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
