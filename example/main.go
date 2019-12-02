@@ -14,6 +14,7 @@ import (
 func main(){
 	var c codec.Codec
 	var data []byte
+
 	//bytes_noreflect
 	object_noreflect:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	data,_=object_noreflect.Marshal(nil)
@@ -84,6 +85,7 @@ func main(){
 	var obj_msgp_cp msgp.Student
 	c.Decode(data,&obj_msgp_cp)
 	fmt.Println("msgp Decode：",obj_msgp_cp)
+
 
 	//proto
 	obj_pb:=pb.Student{Name:"Mort",Age:18,Address:"Earth"}

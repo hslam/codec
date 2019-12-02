@@ -275,7 +275,7 @@ func BenchmarkDecodeGob(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecOnlyBytes(t *testing.B) {
+func BenchmarkRoundtripOnlyBytes(t *testing.B) {
 	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
 	var c=BytesCodec{}
 	t.ResetTimer()
@@ -286,7 +286,7 @@ func BenchmarkCodecOnlyBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecBytesNoReflect(t *testing.B) {
+func BenchmarkRoundtripBytesNoReflect(t *testing.B) {
 	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var data []byte
@@ -298,7 +298,7 @@ func BenchmarkCodecBytesNoReflect(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecBytes(t *testing.B) {
+func BenchmarkRoundtripBytes(t *testing.B) {
 	buf:=make([]byte,100)
 	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var obj []byte
@@ -314,7 +314,7 @@ func BenchmarkCodecBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGencodeNoReflect(t *testing.B) {
+func BenchmarkRoundtripGencodeNoReflect(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
 	buf:=make([]byte,100)
 	t.ResetTimer()
@@ -325,7 +325,7 @@ func BenchmarkCodecGencodeNoReflect(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGencode(t *testing.B) {
+func BenchmarkRoundtripGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=GencodeCodec{Buffer:make([]byte,100)}
 	t.ResetTimer()
@@ -336,7 +336,7 @@ func BenchmarkCodecGencode(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGogoProtoNoReflect(t *testing.B) {
+func BenchmarkRoundtripGogoProtoNoReflect(t *testing.B) {
 	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
@@ -346,7 +346,7 @@ func BenchmarkCodecGogoProtoNoReflect(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGogoProto(t *testing.B) {
+func BenchmarkRoundtripGogoProto(t *testing.B) {
 	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=GogoProtoCodec{}
 	t.ResetTimer()
@@ -357,7 +357,7 @@ func BenchmarkCodecGogoProto(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecMsgpNoReflect(t *testing.B) {
+func BenchmarkRoundtripMsgpNoReflect(t *testing.B) {
 	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
 	buf:=make([]byte,100)
 	t.ResetTimer()
@@ -368,7 +368,7 @@ func BenchmarkCodecMsgpNoReflect(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecMsgp(t *testing.B) {
+func BenchmarkRoundtripMsgp(t *testing.B) {
 	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=MsgpCodec{Buffer:make([]byte,100)}
 	t.ResetTimer()
@@ -379,7 +379,7 @@ func BenchmarkCodecMsgp(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecProto(t *testing.B) {
+func BenchmarkRoundtripProto(t *testing.B) {
 	var obj=pb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=ProtoCodec{}
 	t.ResetTimer()
@@ -390,7 +390,7 @@ func BenchmarkCodecProto(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecJson(t *testing.B) {
+func BenchmarkRoundtripJson(t *testing.B) {
 	var obj=model.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=JsonCodec{}
 	t.ResetTimer()
@@ -401,7 +401,7 @@ func BenchmarkCodecJson(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecXml(t *testing.B) {
+func BenchmarkRoundtripXml(t *testing.B) {
 	var obj=model.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=XmlCodec{}
 	t.ResetTimer()
@@ -412,7 +412,7 @@ func BenchmarkCodecXml(t *testing.B) {
 	}
 }
 
-func BenchmarkCodecGob(t *testing.B) {
+func BenchmarkRoundtripGob(t *testing.B) {
 	var obj=model.Student{Name:"Mort",Age:18,Address:"Earth"}
 	var c=GobCodec{}
 	t.ResetTimer()
