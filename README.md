@@ -16,11 +16,11 @@ A codec library written in golang.
 
 ### Install
 ```
-go get hslam.com/git/x/codec
+go get github.com/hslam/codec
 ```
 ### Import
 ```
-import "hslam.com/git/x/codec"
+import "github.com/hslam/codec"
 ```
 ### Usage
 #### Example
@@ -29,13 +29,13 @@ package main
 
 import (
 	"fmt"
-	"hslam.com/git/x/codec"
-	"hslam.com/git/x/codec/example/model"
-	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/bytes"
-	"hslam.com/git/x/codec/example/gencode"
-	"hslam.com/git/x/codec/example/msgp"
-	"hslam.com/git/x/codec/example/gogopb"
+	"github.com/hslam/codec"
+	"github.com/hslam/codec/example/model"
+	"github.com/hslam/codec/example/pb"
+	"github.com/hslam/codec/example/bytes"
+	"github.com/hslam/codec/example/gencode"
+	"github.com/hslam/codec/example/msgp"
+	"github.com/hslam/codec/example/gogopb"
 )
 
 func main(){
@@ -183,7 +183,7 @@ go test -v -run="none" -bench=. -benchtime=1s
 ```
 goos: darwin
 goarch: amd64
-pkg: hslam.com/git/x/codec
+pkg: github.com/hslam/codec
 BenchmarkEncodeOnlyBytes-4               	1000000000	         0.619 ns/op
 BenchmarkEncodeBytesNoReflect-4          	57501272	        20.9 ns/op
 BenchmarkEncodeBytes-4                   	55385464	        21.6 ns/op
@@ -224,7 +224,7 @@ BenchmarkRoundtripJson-4                 	  661342	      1746 ns/op
 BenchmarkRoundtripXml-4                  	  141186	      8160 ns/op
 BenchmarkRoundtripGob-4                  	   50650	     23135 ns/op
 PASS
-ok  	hslam.com/git/x/codec	51.592s
+ok  	github.com/hslam/codec	51.592s
 ```
 
 ### Licence

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"hslam.com/git/x/codec"
-	"hslam.com/git/x/codec/example/model"
-	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/bytes"
-	"hslam.com/git/x/codec/example/gencode"
-	"hslam.com/git/x/codec/example/msgp"
-	"hslam.com/git/x/codec/example/gogopb"
+	"github.com/hslam/codec"
+	"github.com/hslam/codec/example/model"
+	"github.com/hslam/codec/example/pb"
+	"github.com/hslam/codec/example/bytes"
+	"github.com/hslam/codec/example/gencode"
+	"github.com/hslam/codec/example/msgp"
+	"github.com/hslam/codec/example/gogopb"
 )
 
 func main(){

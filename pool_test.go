@@ -2,11 +2,11 @@ package codec
 
 import (
 	"testing"
-	"hslam.com/git/x/codec/example/model"
-	"hslam.com/git/x/codec/example/pb"
-	"hslam.com/git/x/codec/example/gogopb"
-	"hslam.com/git/x/codec/example/gencode"
-	"hslam.com/git/x/codec/example/msgp"
+	"github.com/hslam/codec/example/model"
+	"github.com/hslam/codec/example/pb"
+	"github.com/hslam/codec/example/gogopb"
+	"github.com/hslam/codec/example/gencode"
+	"github.com/hslam/codec/example/msgp"
 )
 
 func TestBytesCodecPool(t *testing.T) {
