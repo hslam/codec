@@ -24,14 +24,6 @@ func main(){
 	c.Decode(data,&obj_bytes_copy)
 	fmt.Println("bytes Decode：",obj_bytes_copy)
 
-	//code_noreflect
-	obj_code_noreflect:=code.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_code_noreflect.Marshal(nil)
-	fmt.Printf("code_noreflect Encode：length-%d,hex-%x\n",len(data),data)
-	var obj_code_noreflect_cp=&code.Student{}
-	obj_code_noreflect_cp.Unmarshal(data)
-	fmt.Println("code_noreflect Decode：",obj_code_noreflect_cp)
-
 	//code
 	obj_code:= code.Student{Name:"Mort",Age:18,Address:"Earth"}
 	c=&codec.CodeCodec{}
@@ -40,14 +32,6 @@ func main(){
 	var obj_code_cp code.Student
 	c.Decode(data,&obj_code_cp)
 	fmt.Println("code Decode：",obj_code_cp)
-
-	//gencode_noreflect
-	obj_gencode_noreflect:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_gencode_noreflect.Marshal(nil)
-	fmt.Printf("gencode_noreflect Encode：length-%d,hex-%x\n",len(data),data)
-	var obj_gencode_noreflect_cp=&gencode.Student{}
-	obj_gencode_noreflect_cp.Unmarshal(data)
-	fmt.Println("gencode_noreflect Decode：",obj_gencode_noreflect_cp)
 
 	//gencode
 	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -58,14 +42,6 @@ func main(){
 	c.Decode(data,&obj_gencode_cp)
 	fmt.Println("gencode Decode：",obj_gencode_cp)
 
-	//gogopb_noreflect
-	obj_gogopb_noreflect:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_gogopb_noreflect.Marshal()
-	fmt.Printf("gogoproto_noreflect Encode：length-%d,hex-%x\n",len(data),data)
-	var obj_gogopb_noreflect_cp= gogopb.Student{}
-	obj_gogopb_noreflect_cp.Unmarshal(data)
-	fmt.Println("gogoproto_noreflect Decode：",obj_gogopb_noreflect_cp)
-
 	//gogoproto
 	obj_gogopb:= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
 	c=&codec.GogoProtoCodec{}
@@ -74,14 +50,6 @@ func main(){
 	var obj_gogopb_cp gogopb.Student
 	c.Decode(data,&obj_gogopb_cp)
 	fmt.Println("gogoproto Decode：",obj_gogopb_cp)
-
-	//msgp_noreflect
-	obj_msgp_noreflect:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_=obj_msgp_noreflect.MarshalMsg(nil)
-	fmt.Printf("msgp_noreflect Encode：length-%d,hex-%x\n",len(data),data)
-	var obj_msgp_noreflect_cp=&msgp.Student{}
-	obj_msgp_noreflect_cp.UnmarshalMsg(data)
-	fmt.Println("msgp_noreflect Decode：",obj_msgp_noreflect_cp)
 
 	//msgp
 	obj_msgp:= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
