@@ -19,14 +19,14 @@ func BenchmarkEncodeBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkEncodeCodeNoReflect(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=code.Student{Name:"Mort",Age:18,Address:"Earth"}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		object.Marshal(buf)
-	}
-}
+//func BenchmarkEncodeCodeNoReflect(t *testing.B) {
+//	buf:=make([]byte,100)
+//	object:=code.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		object.Marshal(buf)
+//	}
+//}
 
 func BenchmarkEncodeCode(t *testing.B) {
 	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -38,14 +38,14 @@ func BenchmarkEncodeCode(t *testing.B) {
 }
 
 
-func BenchmarkEncodeGencodeNoReflect(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		object.Marshal(buf)
-	}
-}
+//func BenchmarkEncodeGencodeNoReflect(t *testing.B) {
+//	buf:=make([]byte,100)
+//	object:=gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		object.Marshal(buf)
+//	}
+//}
 
 func BenchmarkEncodeGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -73,14 +73,14 @@ func BenchmarkEncodeGogoProto(t *testing.B) {
 	}
 }
 
-func BenchmarkEncodeMsgpNoReflect(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		object.MarshalMsg(buf)
-	}
-}
+//func BenchmarkEncodeMsgpNoReflect(t *testing.B) {
+//	buf:=make([]byte,100)
+//	object:=msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		object.MarshalMsg(buf)
+//	}
+//}
 
 func BenchmarkEncodeMsgp(t *testing.B) {
 	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -137,15 +137,16 @@ func BenchmarkDecodeBytes(t *testing.B) {
 		c.Decode(data,&obj_copy)
 	}
 }
-func BenchmarkDecodeCodeNoReflect(t *testing.B) {
-	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_:=obj.Marshal(nil)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		var obj_copy =&code.Student{}
-		obj_copy.Unmarshal(data)
-	}
-}
+
+//func BenchmarkDecodeCodeNoReflect(t *testing.B) {
+//	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	data,_:=obj.Marshal(nil)
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		var obj_copy =&code.Student{}
+//		obj_copy.Unmarshal(data)
+//	}
+//}
 
 func BenchmarkDecodeCode(t *testing.B) {
 	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -157,15 +158,16 @@ func BenchmarkDecodeCode(t *testing.B) {
 		c.Decode(data,&obj_copy)
 	}
 }
-func BenchmarkDecodeGencodeNoReflect(t *testing.B) {
-	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_:=obj.Marshal(nil)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		var obj_copy =&gencode.Student{}
-		obj_copy.Unmarshal(data)
-	}
-}
+
+//func BenchmarkDecodeGencodeNoReflect(t *testing.B) {
+//	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	data,_:=obj.Marshal(nil)
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		var obj_copy =&gencode.Student{}
+//		obj_copy.Unmarshal(data)
+//	}
+//}
 
 func BenchmarkDecodeGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -178,15 +180,15 @@ func BenchmarkDecodeGencode(t *testing.B) {
 	}
 }
 
-func BenchmarkDecodeGogoProtoNoReflect(t *testing.B) {
-	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_:=obj.Marshal()
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		var obj_copy =&gogopb.Student{}
-		obj_copy.Unmarshal(data)
-	}
-}
+//func BenchmarkDecodeGogoProtoNoReflect(t *testing.B) {
+//	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	data,_:=obj.Marshal()
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		var obj_copy =&gogopb.Student{}
+//		obj_copy.Unmarshal(data)
+//	}
+//}
 
 func BenchmarkDecodeGogoProto(t *testing.B) {
 	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -199,15 +201,15 @@ func BenchmarkDecodeGogoProto(t *testing.B) {
 	}
 }
 
-func BenchmarkDecodeMsgpNoReflect(t *testing.B) {
-	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
-	data,_:=obj.MarshalMsg(nil)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		var obj_copy =&msgp.Student{}
-		obj_copy.UnmarshalMsg(data)
-	}
-}
+//func BenchmarkDecodeMsgpNoReflect(t *testing.B) {
+//	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	data,_:=obj.MarshalMsg(nil)
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		var obj_copy =&msgp.Student{}
+//		obj_copy.UnmarshalMsg(data)
+//	}
+//}
 
 func BenchmarkDecodeMsgp(t *testing.B) {
 	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -274,16 +276,17 @@ func BenchmarkRoundtripBytes(t *testing.B) {
 		c.Decode(data,&obj_copy)
 	}
 }
-func BenchmarkRoundtripCodeNoReflect(t *testing.B) {
-	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
-	buf:=make([]byte,100)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		data,_:=obj.Marshal(buf)
-		var obj_copy =&code.Student{}
-		obj_copy.Unmarshal(data)
-	}
-}
+
+//func BenchmarkRoundtripCodeNoReflect(t *testing.B) {
+//	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	buf:=make([]byte,100)
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		data,_:=obj.Marshal(buf)
+//		var obj_copy =&code.Student{}
+//		obj_copy.Unmarshal(data)
+//	}
+//}
 
 func BenchmarkRoundtripCode(t *testing.B) {
 	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -295,16 +298,17 @@ func BenchmarkRoundtripCode(t *testing.B) {
 		c.Decode(data,&obj_copy)
 	}
 }
-func BenchmarkRoundtripGencodeNoReflect(t *testing.B) {
-	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	buf:=make([]byte,100)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		data,_:=obj.Marshal(buf)
-		var obj_copy =&gencode.Student{}
-		obj_copy.Unmarshal(data)
-	}
-}
+
+//func BenchmarkRoundtripGencodeNoReflect(t *testing.B) {
+//	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	buf:=make([]byte,100)
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		data,_:=obj.Marshal(buf)
+//		var obj_copy =&gencode.Student{}
+//		obj_copy.Unmarshal(data)
+//	}
+//}
 
 func BenchmarkRoundtripGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -317,15 +321,15 @@ func BenchmarkRoundtripGencode(t *testing.B) {
 	}
 }
 
-func BenchmarkRoundtripGogoProtoNoReflect(t *testing.B) {
-	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		data,_:=obj.Marshal()
-		var obj_copy =&gogopb.Student{}
-		obj_copy.Unmarshal(data)
-	}
-}
+//func BenchmarkRoundtripGogoProtoNoReflect(t *testing.B) {
+//	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		data,_:=obj.Marshal()
+//		var obj_copy =&gogopb.Student{}
+//		obj_copy.Unmarshal(data)
+//	}
+//}
 
 func BenchmarkRoundtripGogoProto(t *testing.B) {
 	var obj= gogopb.Student{Name:"Mort",Age:18,Address:"Earth"}
@@ -338,16 +342,16 @@ func BenchmarkRoundtripGogoProto(t *testing.B) {
 	}
 }
 
-func BenchmarkRoundtripMsgpNoReflect(t *testing.B) {
-	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
-	buf:=make([]byte,100)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		data,_:=obj.MarshalMsg(buf)
-		var obj_copy =&msgp.Student{}
-		obj_copy.UnmarshalMsg(data)
-	}
-}
+//func BenchmarkRoundtripMsgpNoReflect(t *testing.B) {
+//	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
+//	buf:=make([]byte,100)
+//	t.ResetTimer()
+//	for i := 0; i < t.N; i++ {
+//		data,_:=obj.MarshalMsg(buf)
+//		var obj_copy =&msgp.Student{}
+//		obj_copy.UnmarshalMsg(data)
+//	}
+//}
 
 func BenchmarkRoundtripMsgp(t *testing.B) {
 	var obj= msgp.Student{Name:"Mort",Age:18,Address:"Earth"}
