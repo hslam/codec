@@ -5,13 +5,13 @@ import (
 	"github.com/hslam/codec/example/model"
 	"github.com/hslam/codec/example/pb"
 	"github.com/hslam/codec/example/gogopb"
-	"github.com/hslam/codec/example/bytes"
 	"github.com/hslam/codec/example/gencode"
 	"github.com/hslam/codec/example/msgp"
+	"github.com/hslam/codec/example/code"
 )
 
-func BenchmarkEncodeOnlyBytes(t *testing.B) {
-	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
+func BenchmarkEncodeBytes(t *testing.B) {
+	var obj =[]byte{4,77,111,114,116,18,5,69,97,114,116,104}
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
@@ -19,26 +19,24 @@ func BenchmarkEncodeOnlyBytes(t *testing.B) {
 	}
 }
 
-func BenchmarkEncodeBytesNoReflect(t *testing.B) {
+func BenchmarkEncodeCodeNoReflect(t *testing.B) {
 	buf:=make([]byte,100)
-	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
+	object:=code.Student{Name:"Mort",Age:18,Address:"Earth"}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		object.Marshal(buf)
 	}
 }
 
-func BenchmarkEncodeBytes(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var obj []byte
-	var c=BytesCodec{}
+func BenchmarkEncodeCode(t *testing.B) {
+	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=CodeCodec{Buffer:make([]byte,100)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj,_=object.Marshal(buf)
 		c.Encode(&obj)
 	}
 }
+
 
 func BenchmarkEncodeGencodeNoReflect(t *testing.B) {
 	buf:=make([]byte,100)
@@ -51,7 +49,7 @@ func BenchmarkEncodeGencodeNoReflect(t *testing.B) {
 
 func BenchmarkEncodeGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var c=GencodeCodec{Buffer:make([]byte,100)}
+	var c=CodeCodec{Buffer:make([]byte,100)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
@@ -129,45 +127,36 @@ func BenchmarkEncodeGob(t *testing.B) {
 	}
 }
 
-func BenchmarkDecodeOnlyBytes(t *testing.B) {
-	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
-	var c=BytesCodec{}
-	data,_:=c.Encode(&obj)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		var obj_copy []byte
-		c.Decode(data,&obj_copy)
-	}
-}
-
-func BenchmarkDecodeBytesNoReflect(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var data []byte
-	data,_=object.Marshal(buf)
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		var object_copy =&bytes.Student{}
-		object_copy.Unmarshal(data)
-	}
-}
-
 func BenchmarkDecodeBytes(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var obj []byte
+	var obj =[]byte{4,77,111,114,116,18,5,69,97,114,116,104}
 	var c=BytesCodec{}
-	obj,_=object.Marshal(buf)
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
-		var object_copy =&bytes.Student{}
-		object_copy.Unmarshal(data)
+	}
+}
+func BenchmarkDecodeCodeNoReflect(t *testing.B) {
+	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+	data,_:=obj.Marshal(nil)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy =&code.Student{}
+		obj_copy.Unmarshal(data)
 	}
 }
 
+func BenchmarkDecodeCode(t *testing.B) {
+	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=CodeCodec{}
+	data,_:=c.Encode(&obj)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		var obj_copy code.Student
+		c.Decode(data,&obj_copy)
+	}
+}
 func BenchmarkDecodeGencodeNoReflect(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
 	data,_:=obj.Marshal(nil)
@@ -180,7 +169,7 @@ func BenchmarkDecodeGencodeNoReflect(t *testing.B) {
 
 func BenchmarkDecodeGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var c=GencodeCodec{}
+	var c=CodeCodec{}
 	data,_:=c.Encode(&obj)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
@@ -275,45 +264,37 @@ func BenchmarkDecodeGob(t *testing.B) {
 	}
 }
 
-func BenchmarkRoundtripOnlyBytes(t *testing.B) {
-	var obj =[]byte{4,77,111,114,116,18,69,97,114,116,104}
-	var c=BytesCodec{}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy []byte
-		c.Decode(data,&obj_copy)
-	}
-}
-
-func BenchmarkRoundtripBytesNoReflect(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var data []byte
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		data,_=object.Marshal(buf)
-		var object_copy =&bytes.Student{}
-		object_copy.Unmarshal(data)
-	}
-}
-
 func BenchmarkRoundtripBytes(t *testing.B) {
-	buf:=make([]byte,100)
-	object:=bytes.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var obj []byte
+	var obj =[]byte{4,77,111,114,116,18,5,69,97,114,116,104}
 	var c=BytesCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		obj,_=object.Marshal(buf)
 		data,_:=c.Encode(&obj)
 		var obj_copy []byte
 		c.Decode(data,&obj_copy)
-		var object_copy =&bytes.Student{}
-		object_copy.Unmarshal(data)
+	}
+}
+func BenchmarkRoundtripCodeNoReflect(t *testing.B) {
+	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+	buf:=make([]byte,100)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=obj.Marshal(buf)
+		var obj_copy =&code.Student{}
+		obj_copy.Unmarshal(data)
 	}
 }
 
+func BenchmarkRoundtripCode(t *testing.B) {
+	var obj= code.Student{Name:"Mort",Age:18,Address:"Earth"}
+	var c=CodeCodec{Buffer:make([]byte,100)}
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data,_:=c.Encode(&obj)
+		var obj_copy code.Student
+		c.Decode(data,&obj_copy)
+	}
+}
 func BenchmarkRoundtripGencodeNoReflect(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
 	buf:=make([]byte,100)
@@ -327,7 +308,7 @@ func BenchmarkRoundtripGencodeNoReflect(t *testing.B) {
 
 func BenchmarkRoundtripGencode(t *testing.B) {
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	var c=GencodeCodec{Buffer:make([]byte,100)}
+	var c=CodeCodec{Buffer:make([]byte,100)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		data,_:=c.Encode(&obj)

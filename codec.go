@@ -14,6 +14,7 @@ type Codec interface {
 	Decode(data []byte, v interface{}) (error)
 }
 
+
 type JsonCodec struct{
 }
 
@@ -66,6 +67,7 @@ func (c *GobCodec) Decode(data []byte, v interface{}) error {
 	return gob.NewDecoder(bytes.NewReader(data)).Decode(v)
 }
 
+
 type BytesCodec struct{
 }
 
@@ -78,6 +80,7 @@ func (c *BytesCodec) Decode(data []byte, v interface{}) error {
 	return nil
 }
 
+
 type GogoProtoCodec struct{
 }
 
@@ -89,23 +92,25 @@ func (c *GogoProtoCodec) Decode(data []byte, v interface{}) error {
 	return gogoproto.Unmarshal(data, v.(proto.Message))
 }
 
-type gen interface {
+
+type Code interface {
 	Marshal(buf []byte) ([]byte, error)
 	Unmarshal(buf []byte) (uint64, error)
 }
 
-type GencodeCodec struct{
+type CodeCodec struct{
 	Buffer []byte
 }
 
-func (c *GencodeCodec) Encode(v interface{}) ([]byte, error) {
-	return v.(gen).Marshal(c.Buffer)
+func (c *CodeCodec) Encode(v interface{}) ([]byte, error) {
+	return v.(Code).Marshal(c.Buffer)
 }
 
-func (c *GencodeCodec) Decode(data []byte, v interface{}) error {
-	_,err:=v.(gen).Unmarshal(data)
+func (c *CodeCodec) Decode(data []byte, v interface{}) error {
+	_,err:=v.(Code).Unmarshal(data)
 	return err
 }
+
 
 type msgpack interface {
 	MarshalMsg(buf []byte) ([]byte, error)

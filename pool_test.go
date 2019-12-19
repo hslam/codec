@@ -20,10 +20,10 @@ func TestBytesCodecPool(t *testing.T) {
 	p.Put(c)
 }
 
-func TestGencodeCodecPool(t *testing.T) {
+func TestCodeCodecPool(t *testing.T) {
 	var p CodecPool
 	var obj= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	p=NewGencodeCodecPool(1024,65536)
+	p=NewCodeCodecPool(1024,65536)
 	c:=p.Get()
 	data,_:=c.Encode(&obj)
 	var obj_copy =gencode.Student{}

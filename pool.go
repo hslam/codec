@@ -163,32 +163,32 @@ func (cp *GogoProtoCodecPool) Put(c Codec) {
 	}
 }
 
-type GencodeCodecPool struct {
+type CodeCodecPool struct {
 	c chan Codec
 	w int
 }
 
-func NewGencodeCodecPool(total int, width int) (*GencodeCodecPool) {
-	return &GencodeCodecPool{
+func NewCodeCodecPool(total int, width int) (*CodeCodecPool) {
+	return &CodeCodecPool{
 		c: make(chan Codec, total),
 		w: width,
 	}
 }
 
-func (cp *GencodeCodecPool) Get() (c Codec) {
+func (cp *CodeCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
 	default:
 		if cp.w>0{
-			c = &GencodeCodec{make([]byte,cp.w)}
+			c = &CodeCodec{make([]byte,cp.w)}
 		}else {
-			c = &GencodeCodec{}
+			c = &CodeCodec{}
 		}
 	}
 	return
 }
 
-func (cp *GencodeCodecPool) Put(c Codec) {
+func (cp *CodeCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
 	default:
