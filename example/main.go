@@ -26,7 +26,7 @@ func main(){
 
 	//code
 	obj_code:= code.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=&codec.CodeCodec{}
+	c=&codec.CodeCodec{make([]byte,100)}
 	data,_=c.Encode(&obj_code)
 	fmt.Printf("code Encode：length-%d,hex-%x\n",len(data),data)
 	var obj_code_cp code.Student
@@ -35,7 +35,7 @@ func main(){
 
 	//gencode
 	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=&codec.CodeCodec{}
+	c=&codec.CodeCodec{make([]byte,100)}
 	data,_=c.Encode(&obj_gencode)
 	fmt.Printf("gencode Encode：length-%d,hex-%x\n",len(data),data)
 	var obj_gencode_cp gencode.Student

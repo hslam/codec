@@ -54,7 +54,7 @@ func main(){
 
 	//code
 	obj_code:= code.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=&codec.CodeCodec{}
+	c=&codec.CodeCodec{make([]byte,100)}
 	data,_=c.Encode(&obj_code)
 	fmt.Printf("code Encode：length-%d,hex-%x\n",len(data),data)
 	var obj_code_cp code.Student
@@ -63,7 +63,7 @@ func main(){
 
 	//gencode
 	obj_gencode:= gencode.Student{Name:"Mort",Age:18,Address:"Earth"}
-	c=&codec.CodeCodec{}
+	c=&codec.CodeCodec{make([]byte,100)}
 	data,_=c.Encode(&obj_gencode)
 	fmt.Printf("gencode Encode：length-%d,hex-%x\n",len(data),data)
 	var obj_gencode_cp gencode.Student
@@ -129,7 +129,7 @@ func main(){
 ```
 bytes Encode：length-12,hex-044d6f727412054561727468
 bytes Decode： [4 77 111 114 116 18 5 69 97 114 116 104]
-code Encode：length-12,hex-044d6f727412054561727468
+code Encode：length-15,hex-044d6f727412000000054561727468
 code Decode： {Mort 18 Earth}
 gencode Encode：length-15,hex-044d6f727412000000054561727468
 gencode Decode： {Mort 18 Earth}
@@ -153,36 +153,41 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: github.com/hslam/codec
-BenchmarkEncodeBytes-4                	1000000000	         0.398 ns/op
-BenchmarkEncodeCode-4                 	35162025	        33.9 ns/op
-BenchmarkEncodeGencode-4              	49246317	        24.4 ns/op
-BenchmarkEncodeGogoProtoNoReflect-4   	22168352	        50.1 ns/op
-BenchmarkEncodeGogoProto-4            	12356419	        95.0 ns/op
-BenchmarkEncodeMsgp-4                 	11636551	        96.7 ns/op
-BenchmarkEncodeProto-4                	 7937266	       143 ns/op
-BenchmarkEncodeJson-4                 	 3583764	       333 ns/op
-BenchmarkEncodeXml-4                  	  501956	      2362 ns/op
-BenchmarkEncodeGob-4                  	  374696	      3158 ns/op
-BenchmarkDecodeBytes-4                	745674583	         1.57 ns/op
-BenchmarkDecodeCode-4                 	17553548	        63.8 ns/op
-BenchmarkDecodeGencode-4              	12496632	        91.2 ns/op
-BenchmarkDecodeGogoProto-4            	 8017240	       150 ns/op
-BenchmarkDecodeMsgp-4                 	 7639341	       154 ns/op
-BenchmarkDecodeProto-4                	 6751602	       182 ns/op
-BenchmarkDecodeJson-4                 	  991429	      1237 ns/op
-BenchmarkDecodeXml-4                  	  211118	      5337 ns/op
-BenchmarkDecodeGob-4                  	   59790	     19550 ns/op
-BenchmarkRoundtripBytes-4             	748799673	         1.59 ns/op
-BenchmarkRoundtripCode-4              	11906910	        96.5 ns/op
-BenchmarkRoundtripGencode-4           	 9148906	       128 ns/op
-BenchmarkRoundtripGogoProto-4         	 4794517	       247 ns/op
-BenchmarkRoundtripMsgp-4              	 4306330	       278 ns/op
-BenchmarkRoundtripProto-4             	 3514782	       331 ns/op
-BenchmarkRoundtripJson-4              	  736875	      1651 ns/op
-BenchmarkRoundtripXml-4               	  140773	      8160 ns/op
-BenchmarkRoundtripGob-4               	   46356	     23799 ns/op
+BenchmarkEncodeBytes-4                 	1000000000	         0.405 ns/op
+BenchmarkEncodeCodeNoReflect-4         	70534636	        17.2 ns/op
+BenchmarkEncodeCode-4                  	47127092	        25.7 ns/op
+BenchmarkEncodeGencodeNoReflect-4      	76368139	        15.4 ns/op
+BenchmarkEncodeGencode-4               	48860787	        25.2 ns/op
+BenchmarkEncodeGogoProto-4             	 9893486	       101 ns/op
+BenchmarkEncodeMsgp-4                  	12350995	        98.2 ns/op
+BenchmarkEncodeProto-4                 	 7483719	       141 ns/op
+BenchmarkEncodeJson-4                  	 3576153	       334 ns/op
+BenchmarkEncodeXml-4                   	  507687	      2424 ns/op
+BenchmarkEncodeGob-4                   	  374424	      3272 ns/op
+BenchmarkDecodeBytes-4                 	760777468	         1.56 ns/op
+BenchmarkDecodeCodeNoReflect-4         	80665164	        14.6 ns/op
+BenchmarkDecodeCode-4                  	17899275	        60.1 ns/op
+BenchmarkDecodeGencodeNoReflect-4      	26136415	        44.2 ns/op
+BenchmarkDecodeGencode-4               	12538338	        93.2 ns/op
+BenchmarkDecodeGogoProto-4             	 8020778	       147 ns/op
+BenchmarkDecodeMsgp-4                  	 7080954	       165 ns/op
+BenchmarkDecodeProto-4                 	 6728606	       174 ns/op
+BenchmarkDecodeJson-4                  	  987219	      1232 ns/op
+BenchmarkDecodeXml-4                   	  217090	      5324 ns/op
+BenchmarkDecodeGob-4                   	   60376	     19282 ns/op
+BenchmarkRoundtripBytes-4              	746814086	         1.57 ns/op
+BenchmarkRoundtripCodeNoReflect-4      	38134770	        31.7 ns/op
+BenchmarkRoundtripCode-4               	13226766	        85.6 ns/op
+BenchmarkRoundtripGencodeNoReflect-4   	19248774	        58.4 ns/op
+BenchmarkRoundtripGencode-4            	 9241761	       126 ns/op
+BenchmarkRoundtripGogoProto-4          	 4803943	       246 ns/op
+BenchmarkRoundtripMsgp-4               	 4301529	       276 ns/op
+BenchmarkRoundtripProto-4              	 3554709	       330 ns/op
+BenchmarkRoundtripJson-4               	  752407	      1635 ns/op
+BenchmarkRoundtripXml-4                	  139837	      8150 ns/op
+BenchmarkRoundtripGob-4                	   50524	     22882 ns/op
 PASS
-ok  	github.com/hslam/codec	35.682s
+ok  	github.com/hslam/codec	43.591s
 ```
 
 ### Licence
