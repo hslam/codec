@@ -20,74 +20,108 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Student struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=Name,proto3" json:"Name,omitempty"`
-	Age                  int32    `protobuf:"varint,2,opt,name=Age,proto3" json:"Age,omitempty"`
-	Address              string   `protobuf:"bytes,3,opt,name=Address,proto3" json:"Address,omitempty"`
+type Object struct {
+	A                    uint32   `protobuf:"varint,1,opt,name=A,proto3" json:"A,omitempty"`
+	B                    uint64   `protobuf:"varint,2,opt,name=B,proto3" json:"B,omitempty"`
+	C                    float32  `protobuf:"fixed32,3,opt,name=C,proto3" json:"C,omitempty"`
+	D                    float64  `protobuf:"fixed64,4,opt,name=D,proto3" json:"D,omitempty"`
+	E                    string   `protobuf:"bytes,5,opt,name=E,proto3" json:"E,omitempty"`
+	F                    bool     `protobuf:"varint,6,opt,name=F,proto3" json:"F,omitempty"`
+	G                    []byte   `protobuf:"bytes,7,opt,name=G,proto3" json:"G,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Student) Reset()         { *m = Student{} }
-func (m *Student) String() string { return proto.CompactTextString(m) }
-func (*Student) ProtoMessage()    {}
-func (*Student) Descriptor() ([]byte, []int) {
+func (m *Object) Reset()         { *m = Object{} }
+func (m *Object) String() string { return proto.CompactTextString(m) }
+func (*Object) ProtoMessage()    {}
+func (*Object) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4c16552f9fdb66d8, []int{0}
 }
 
-func (m *Student) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Student.Unmarshal(m, b)
+func (m *Object) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Object.Unmarshal(m, b)
 }
-func (m *Student) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Student.Marshal(b, m, deterministic)
+func (m *Object) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Object.Marshal(b, m, deterministic)
 }
-func (m *Student) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Student.Merge(m, src)
+func (m *Object) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Object.Merge(m, src)
 }
-func (m *Student) XXX_Size() int {
-	return xxx_messageInfo_Student.Size(m)
+func (m *Object) XXX_Size() int {
+	return xxx_messageInfo_Object.Size(m)
 }
-func (m *Student) XXX_DiscardUnknown() {
-	xxx_messageInfo_Student.DiscardUnknown(m)
+func (m *Object) XXX_DiscardUnknown() {
+	xxx_messageInfo_Object.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Student proto.InternalMessageInfo
+var xxx_messageInfo_Object proto.InternalMessageInfo
 
-func (m *Student) GetName() string {
+func (m *Object) GetA() uint32 {
 	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
-func (m *Student) GetAge() int32 {
-	if m != nil {
-		return m.Age
+		return m.A
 	}
 	return 0
 }
 
-func (m *Student) GetAddress() string {
+func (m *Object) GetB() uint64 {
 	if m != nil {
-		return m.Address
+		return m.B
+	}
+	return 0
+}
+
+func (m *Object) GetC() float32 {
+	if m != nil {
+		return m.C
+	}
+	return 0
+}
+
+func (m *Object) GetD() float64 {
+	if m != nil {
+		return m.D
+	}
+	return 0
+}
+
+func (m *Object) GetE() string {
+	if m != nil {
+		return m.E
 	}
 	return ""
 }
 
+func (m *Object) GetF() bool {
+	if m != nil {
+		return m.F
+	}
+	return false
+}
+
+func (m *Object) GetG() []byte {
+	if m != nil {
+		return m.G
+	}
+	return nil
+}
+
 func init() {
-	proto.RegisterType((*Student)(nil), "pb.Student")
+	proto.RegisterType((*Object)(nil), "pb.Object")
 }
 
 func init() { proto.RegisterFile("model.proto", fileDescriptor_4c16552f9fdb66d8) }
 
 var fileDescriptor_4c16552f9fdb66d8 = []byte{
-	// 106 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xce, 0xcd, 0x4f, 0x49,
-	0xcd, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48, 0x52, 0xf2, 0xe4, 0x62, 0x0f,
-	0x2e, 0x29, 0x4d, 0x49, 0xcd, 0x2b, 0x11, 0x12, 0xe2, 0x62, 0xf1, 0x4b, 0xcc, 0x4d, 0x95, 0x60,
-	0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x85, 0x04, 0xb8, 0x98, 0x1d, 0xd3, 0x53, 0x25, 0x98,
-	0x14, 0x18, 0x35, 0x58, 0x83, 0x40, 0x4c, 0x21, 0x09, 0x2e, 0x76, 0xc7, 0x94, 0x94, 0xa2, 0xd4,
-	0xe2, 0x62, 0x09, 0x66, 0xb0, 0x42, 0x18, 0x37, 0x89, 0x0d, 0x6c, 0xaa, 0x31, 0x20, 0x00, 0x00,
-	0xff, 0xff, 0x9a, 0x79, 0x38, 0x74, 0x64, 0x00, 0x00, 0x00,
+	// 133 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x1c, 0xcd, 0x2d, 0x0e, 0x02, 0x31,
+	0x10, 0x06, 0xd0, 0x7c, 0x65, 0x29, 0x50, 0x16, 0xb3, 0x6a, 0xe4, 0x04, 0x35, 0x0a, 0xc3, 0x09,
+	0xf6, 0x5f, 0x92, 0xcc, 0x11, 0x0a, 0x6b, 0x1a, 0x48, 0x1b, 0xd2, 0xfb, 0x87, 0x0c, 0xf2, 0xa9,
+	0x17, 0xce, 0x9f, 0xfc, 0xda, 0xde, 0xb7, 0xf2, 0xcd, 0x35, 0x77, 0xae, 0xc4, 0x6b, 0x0a, 0xfe,
+	0x11, 0xd3, 0xf6, 0xac, 0x5d, 0x1b, 0xd0, 0x13, 0x18, 0x72, 0x51, 0xf4, 0xa6, 0x81, 0x1c, 0x43,
+	0x1a, 0xc5, 0x60, 0x1a, 0x69, 0xc7, 0x10, 0xa7, 0x18, 0x4d, 0x13, 0x35, 0x0c, 0x81, 0x62, 0x32,
+	0xcd, 0xb4, 0x67, 0xc8, 0x49, 0x31, 0x9b, 0x16, 0xf2, 0x0c, 0x39, 0x2a, 0x16, 0xd3, 0x4a, 0x07,
+	0x86, 0xb4, 0x8a, 0x35, 0xfa, 0x7f, 0x7b, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0x88, 0x75, 0xdc,
+	0xda, 0x85, 0x00, 0x00, 0x00,
 }

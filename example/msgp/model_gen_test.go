@@ -9,8 +9,8 @@ import (
 	"github.com/tinylib/msgp/msgp"
 )
 
-func TestMarshalUnmarshalStudent(t *testing.T) {
-	v := Student{}
+func TestMarshalUnmarshalObject(t *testing.T) {
+	v := Object{}
 	bts, err := v.MarshalMsg(nil)
 	if err != nil {
 		t.Fatal(err)
@@ -32,8 +32,8 @@ func TestMarshalUnmarshalStudent(t *testing.T) {
 	}
 }
 
-func BenchmarkMarshalMsgStudent(b *testing.B) {
-	v := Student{}
+func BenchmarkMarshalMsgObject(b *testing.B) {
+	v := Object{}
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -41,8 +41,8 @@ func BenchmarkMarshalMsgStudent(b *testing.B) {
 	}
 }
 
-func BenchmarkAppendMsgStudent(b *testing.B) {
-	v := Student{}
+func BenchmarkAppendMsgObject(b *testing.B) {
+	v := Object{}
 	bts := make([]byte, 0, v.Msgsize())
 	bts, _ = v.MarshalMsg(bts[0:0])
 	b.SetBytes(int64(len(bts)))
@@ -53,8 +53,8 @@ func BenchmarkAppendMsgStudent(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshalStudent(b *testing.B) {
-	v := Student{}
+func BenchmarkUnmarshalObject(b *testing.B) {
+	v := Object{}
 	bts, _ := v.MarshalMsg(nil)
 	b.ReportAllocs()
 	b.SetBytes(int64(len(bts)))
@@ -67,17 +67,17 @@ func BenchmarkUnmarshalStudent(b *testing.B) {
 	}
 }
 
-func TestEncodeDecodeStudent(t *testing.T) {
-	v := Student{}
+func TestEncodeDecodeObject(t *testing.T) {
+	v := Object{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 
 	m := v.Msgsize()
 	if buf.Len() > m {
-		t.Log("WARNING: TestEncodeDecodeStudent Msgsize() is inaccurate")
+		t.Log("WARNING: TestEncodeDecodeObject Msgsize() is inaccurate")
 	}
 
-	vn := Student{}
+	vn := Object{}
 	err := msgp.Decode(&buf, &vn)
 	if err != nil {
 		t.Error(err)
@@ -91,8 +91,8 @@ func TestEncodeDecodeStudent(t *testing.T) {
 	}
 }
 
-func BenchmarkEncodeStudent(b *testing.B) {
-	v := Student{}
+func BenchmarkEncodeObject(b *testing.B) {
+	v := Object{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 	b.SetBytes(int64(buf.Len()))
@@ -105,8 +105,8 @@ func BenchmarkEncodeStudent(b *testing.B) {
 	en.Flush()
 }
 
-func BenchmarkDecodeStudent(b *testing.B) {
-	v := Student{}
+func BenchmarkDecodeObject(b *testing.B) {
+	v := Object{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 	b.SetBytes(int64(buf.Len()))

@@ -1,8 +1,12 @@
 syntax = "proto3";
 package gogopb;
 
-message Student {
-    string Name = 1;
-    int32 Age = 2;
-    string Address = 3;
+message Object {
+    uint32 A = 1;
+    uint64 B = 2;
+    float C = 3;
+    double D = 4;
+    string E = 5;
+    bool F = 6;
+    bytes G = 7;
 }

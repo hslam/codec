@@ -1,7 +1,11 @@
 package model
 
-type Student struct {
-	Name string
-	Age int32
-	Address string
+type Object struct {
+	A uint32
+	B uint64
+	C float32
+	D float64
+	E string
+	F bool
+	G []byte
 }

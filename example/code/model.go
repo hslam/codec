@@ -4,33 +4,64 @@ import (
 	"github.com/hslam/code"
 )
 
-type Student struct {
-	Name string
-	Age int32
-	Address string
+type Object struct {
+	A uint32
+	B uint64
+	C float32
+	D float64
+	E string
+	F bool
+	G []byte
 }
 
-func (s *Student)Marshal(buf []byte)([]byte, error)  {
-	var age=uint32(s.Age)
-	var l uint64
-	var n uint64
-	n=code.EncodeString(buf,s.Name)
-	l+=n
-	n=code.EncodeUint32(buf[l:],age)
-	l+=n
-	n=code.EncodeString(buf[l:],s.Address)
-	l+=n
-	return buf[:l],nil
-}
-func (s *Student)Unmarshal(data []byte) (uint64, error)  {
+func (o *Object)Marshal(buf []byte)([]byte, error)  {
+	var size uint64
+	size+=4
+	size+=8
+	size+=4
+	size+=8
+	size+=code.SizeofString(o.E)
+	size+=1
+	size+=code.SizeofBytes(o.G)
+	if uint64(cap(buf)) >= size {
+		buf = buf[:size]
+	} else {
+		buf = make([]byte, size)
+	}
 	var offset uint64
-	size:=code.DecodeString(data,&s.Name)
-	offset+=uint64(size)
-	var age uint32
-	size=code.DecodeUint32(data[offset:],&age)
-	s.Age=int32(age)
-	offset+=uint64(size)
-	size=code.DecodeString(data[offset:],&s.Address)
-	offset+=uint64(size)
+	var n  uint64
+	n = code.EncodeUint32(buf[offset:],o.A)
+	offset+=n
+	n = code.EncodeUint64(buf[offset:],o.B)
+	offset+=n
+	n = code.EncodeFloat32(buf[offset:],o.C)
+	offset+=n
+	n = code.EncodeFloat64(buf[offset:],o.D)
+	offset+=n
+	n = code.EncodeString(buf[offset:],o.E)
+	offset+=n
+	n = code.EncodeBool(buf[offset:],o.F)
+	offset+=n
+	n = code.EncodeBytes(buf[offset:],o.G)
+	offset+=n
+	return buf,nil
+}
+func (o *Object)Unmarshal(data []byte) (uint64, error)  {
+	var offset uint64
+	var n uint64
+	n=code.DecodeUint32(data[offset:],&o.A)
+	offset+=n
+	n=code.DecodeUint64(data[offset:],&o.B)
+	offset+=n
+	n=code.DecodeFloat32(data[offset:],&o.C)
+	offset+=n
+	n=code.DecodeFloat64(data[offset:],&o.D)
+	offset+=n
+	n=code.DecodeString(data[offset:],&o.E)
+	offset+=n
+	n=code.DecodeBool(data[offset:],&o.F)
+	offset+=n
+	n=code.DecodeBytes(data[offset:],&o.G)
+	offset+=n
 	return offset,nil
 }

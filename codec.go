@@ -26,7 +26,6 @@ func (c *JsonCodec) Decode(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
 }
 
-
 type ProtoCodec struct{
 }
 
