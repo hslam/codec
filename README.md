@@ -1,4 +1,11 @@
 # codec
+[![GoDoc](https://godoc.org/github.com/hslam/codec?status.svg)](https://godoc.org/github.com/hslam/codec)
+[![Build Status](https://travis-ci.org/hslam/codec.svg?branch=master)](https://travis-ci.org/hslam/codec)
+[![codecov](https://codecov.io/gh/hslam/codec/branch/master/graph/badge.svg)](https://codecov.io/gh/hslam/codec)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hslam/codec)](https://goreportcard.com/report/github.com/hslam/codec)
+[![GitHub release](https://img.shields.io/github/release/hslam/codec.svg)](https://github.com/hslam/codec/releases/latest)
+[![LICENSE](https://img.shields.io/github/license/hslam/codec.svg?style=flat-square)](https://github.com/hslam/codec/blob/master/LICENSE)
+
 Package codec implements encoding and decoding of multiple codecs
 
 ## Feature
@@ -228,7 +235,7 @@ PASS
 ok  	github.com/hslam/codec	41.569s
 ```
 
-### Licence
+### License
 This package is licensed under a MIT license (Copyright (c) 2019 Meng Huang)
 
 ### Authors
