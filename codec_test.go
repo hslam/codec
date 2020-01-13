@@ -1,409 +1,326 @@
+// Copyright (c) 2019 Meng Huang (mhboy@outlook.com)
+// This package is licensed under a MIT license that can be found in the LICENSE file.
+
+// Package codec implements encoding and decoding of multiple codecs
 package codec
 
 import (
-	"testing"
-	"github.com/hslam/codec/example/model"
-	"github.com/hslam/codec/example/pb"
-	"github.com/hslam/codec/example/gogopb"
-	"github.com/hslam/codec/example/gencode"
-	"github.com/hslam/codec/example/msgp"
 	"github.com/hslam/codec/example/code"
+	"github.com/hslam/codec/example/codepb"
+	"github.com/hslam/codec/example/gencode"
+	"github.com/hslam/codec/example/gogopb"
+	"github.com/hslam/codec/example/model"
+	"github.com/hslam/codec/example/msgp"
+	"github.com/hslam/codec/example/pb"
+	"testing"
 )
 
-func BenchmarkEncodeBytes(t *testing.B) {
-	var obj=[]byte{0,4,0,0,0,4,0,0,0,0,0,0,195,245,72,64,74,216,18,77,251,33,9,64,10,72,101,108,108,111,87,111,114,108,100,1,1,0}
-	var c=BytesCodec{}
+func BenchmarkEncodeBYTES(t *testing.B) {
+	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
+	var c = BYTESCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-//func BenchmarkEncodeCodeNoReflect(t *testing.B) {
-//	buf:=make([]byte,512)
-//	var obj=code.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		obj.Marshal(buf)
-//	}
-//}
-
-func BenchmarkEncodeCode(t *testing.B) {
-	var obj=code.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=CodeCodec{Buffer:make([]byte,512)}
+func BenchmarkEncodeCODE(t *testing.B) {
+	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-
-//func BenchmarkEncodeGencodeNoReflect(t *testing.B) {
-//	buf:=make([]byte,512)
-//	var obj=gencode.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		obj.Marshal(buf)
-//	}
-//}
-
-func BenchmarkEncodeGencode(t *testing.B) {
-	var obj=gencode.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=CodeCodec{Buffer:make([]byte,512)}
+func BenchmarkEncodeGENCODE(t *testing.B) {
+	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-//func BenchmarkEncodeGogoProtoNoReflect(t *testing.B) {
-//	var obj=gogopb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		obj.Marshal()
-//	}
-//}
-
-func BenchmarkEncodeGogoProto(t *testing.B) {
-	var obj=gogopb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=GogoProtoCodec{}
+func BenchmarkEncodeCODEPB(t *testing.B) {
+	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-//func BenchmarkEncodeMsgpNoReflect(t *testing.B) {
-//	buf:=make([]byte,512)
-//	var obj=msgp.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		obj.MarshalMsg(buf)
-//	}
-//}
-
-func BenchmarkEncodeMsgp(t *testing.B) {
-	var obj=msgp.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=MsgpCodec{Buffer:make([]byte,512)}
+func BenchmarkEncodeMSGP(t *testing.B) {
+	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = MSGPCodec{Buffer: make([]byte, 512)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-func BenchmarkEncodeProto(t *testing.B) {
-	var obj=pb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=ProtoCodec{}
+func BenchmarkEncodeGOGOPB(t *testing.B) {
+	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOGOPBCodec{Buffer: make([]byte, 512)}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-func BenchmarkEncodeJson(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=JsonCodec{}
+func BenchmarkEncodePB(t *testing.B) {
+	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = PBCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-func BenchmarkEncodeXml(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=XmlCodec{}
+func BenchmarkEncodeJSON(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = JSONCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-func BenchmarkEncodeGob(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=GobCodec{}
+func BenchmarkEncodeXML(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
+	var c = XMLCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
 		c.Encode(&obj)
 	}
 }
 
-func BenchmarkDecodeBytes(t *testing.B) {
-	var obj=[]byte{0,4,0,0,0,4,0,0,0,0,0,0,195,245,72,64,74,216,18,77,251,33,9,64,10,72,101,108,108,111,87,111,114,108,100,1,1,0}
-	var c=BytesCodec{}
-	data,_:=c.Encode(&obj)
+func BenchmarkEncodeGOB(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOBCodec{}
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy []byte
-		c.Decode(data,&obj_copy)
+		c.Encode(&obj)
 	}
 }
 
-//func BenchmarkDecodeCodeNoReflect(t *testing.B) {
-//	var obj=code.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	data,_:=obj.Marshal(make([]byte,512))
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		var obj_copy =&code.Object{}
-//		obj_copy.Unmarshal(data)
-//	}
-//}
-
-func BenchmarkDecodeCode(t *testing.B) {
-	var obj=code.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=CodeCodec{Buffer:make([]byte,512)}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeBYTES(t *testing.B) {
+	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
+	var c = BYTESCodec{}
+	data, _ := c.Encode(&obj)
+	var objCopy []byte
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy code.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkDecodeGencodeNoReflect(t *testing.B) {
-//	var obj=gencode.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	data,_:=obj.Marshal(make([]byte,512))
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		var obj_copy =&gencode.Object{}
-//		obj_copy.Unmarshal(data)
-//	}
-//}
-
-func BenchmarkDecodeGencode(t *testing.B) {
-	var obj=gencode.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=CodeCodec{Buffer:make([]byte,512)}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeCODE(t *testing.B) {
+	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
+	data, _ := c.Encode(&obj)
+	var objCopy code.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy gencode.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkDecodeGogoProtoNoReflect(t *testing.B) {
-//	var obj=gogopb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	data,_:=obj.Marshal()
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		var obj_copy =&gogopb.Object{}
-//		obj_copy.Unmarshal(data)
-//	}
-//}
-
-func BenchmarkDecodeGogoProto(t *testing.B) {
-	var obj=gogopb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=GogoProtoCodec{}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeGENCODE(t *testing.B) {
+	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
+	data, _ := c.Encode(&obj)
+	var objCopy gencode.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy gogopb.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkDecodeMsgpNoReflect(t *testing.B) {
-//	var obj=msgp.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	data,_:=obj.MarshalMsg(make([]byte,512))
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		var obj_copy =&msgp.Object{}
-//		obj_copy.UnmarshalMsg(data)
-//	}
-//}
-
-func BenchmarkDecodeMsgp(t *testing.B) {
-	var obj=msgp.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=MsgpCodec{make([]byte,512)}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeCODEPB(t *testing.B) {
+	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
+	data, _ := c.Encode(&obj)
+	var objCopy codepb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy msgp.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeProto(t *testing.B) {
-	var obj=pb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=ProtoCodec{}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeMSGP(t *testing.B) {
+	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = MSGPCodec{Buffer: make([]byte, 512)}
+	data, _ := c.Encode(&obj)
+	var objCopy msgp.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy pb.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeJson(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=JsonCodec{}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeGOGOPB(t *testing.B) {
+	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOGOPBCodec{Buffer: make([]byte, 512)}
+	data, _ := c.Encode(&obj)
+	var objCopy gogopb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *model.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeXml(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=XmlCodec{}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodePB(t *testing.B) {
+	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = PBCodec{}
+	data, _ := c.Encode(&obj)
+	var objCopy pb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *model.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeGob(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=GobCodec{}
-	data,_:=c.Encode(&obj)
+func BenchmarkDecodeJSON(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = JSONCodec{}
+	data, _ := c.Encode(&obj)
+	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		var obj_copy *model.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkRoundtripBytes(t *testing.B) {
-	var obj=[]byte{0,4,0,0,0,4,0,0,0,0,0,0,195,245,72,64,74,216,18,77,251,33,9,64,10,72,101,108,108,111,87,111,114,108,100,1,1,0}
-	var c=BytesCodec{}
+func BenchmarkDecodeXML(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
+	var c = XMLCodec{}
+	data, _ := c.Encode(&obj)
+	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy []byte
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkRoundtripCodeNoReflect(t *testing.B) {
-//	var obj=code.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	buf:=make([]byte,512)
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		data,_:=obj.Marshal(buf)
-//		var obj_copy =&code.Object{}
-//		obj_copy.Unmarshal(data)
-//	}
-//}
-
-func BenchmarkRoundtripCode(t *testing.B) {
-	var obj=code.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=CodeCodec{Buffer:make([]byte,512)}
+func BenchmarkDecodeGOB(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOBCodec{}
+	data, _ := c.Encode(&obj)
+	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy code.Object
-		c.Decode(data,&obj_copy)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkRoundtripGencodeNoReflect(t *testing.B) {
-//	var obj=gencode.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	buf:=make([]byte,100)
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		data,_:=obj.Marshal(buf)
-//		var obj_copy =&gencode.Object{}
-//		obj_copy.Unmarshal(data)
-//	}
-//}
-
-func BenchmarkRoundtripGencode(t *testing.B) {
-	var obj=gencode.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=CodeCodec{Buffer:make([]byte,100)}
+func BenchmarkRoundtripBYTES(t *testing.B) {
+	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
+	var c = BYTESCodec{}
+	var objCopy []byte
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy gencode.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkRoundtripGogoProtoNoReflect(t *testing.B) {
-//	var obj=gogopb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		data,_:=obj.Marshal()
-//		var obj_copy =&gogopb.Object{}
-//		obj_copy.Unmarshal(data)
-//	}
-//}
-
-func BenchmarkRoundtripGogoProto(t *testing.B) {
-	var obj=gogopb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=GogoProtoCodec{}
+func BenchmarkRoundtripCODE(t *testing.B) {
+	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
+	var objCopy code.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy gogopb.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }
 
-//func BenchmarkRoundtripMsgpNoReflect(t *testing.B) {
-//	var obj=msgp.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-//	buf:=make([]byte,100)
-//	t.ResetTimer()
-//	for i := 0; i < t.N; i++ {
-//		data,_:=obj.MarshalMsg(buf)
-//		var obj_copy =&msgp.Object{}
-//		obj_copy.UnmarshalMsg(data)
-//	}
-//}
-
-func BenchmarkRoundtripMsgp(t *testing.B) {
-	var obj=msgp.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=MsgpCodec{Buffer:make([]byte,100)}
+func BenchmarkRoundtripGENCODE(t *testing.B) {
+	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
+	var objCopy gencode.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy msgp.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkRoundtripProto(t *testing.B) {
-	var obj=pb.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=ProtoCodec{}
+func BenchmarkRoundtripCODEPB(t *testing.B) {
+	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{Buffer: make([]byte, 512)}
+	var objCopy codepb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy pb.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkRoundtripJson(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=JsonCodec{}
+func BenchmarkRoundtripMSGP(t *testing.B) {
+	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = MSGPCodec{Buffer: make([]byte, 512)}
+	var objCopy msgp.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy *model.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkRoundtripXml(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=XmlCodec{}
+func BenchmarkRoundtripGOGOPB(t *testing.B) {
+	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOGOPBCodec{Buffer: make([]byte, 512)}
+	var objCopy gogopb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy *model.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }
 
-func BenchmarkRoundtripGob(t *testing.B) {
-	var obj=model.Object{A:1024,B:1024,C:3.14,D:3.1415926,E:"HelloWorld",F:true,G:[]byte{0}}
-	var c=GobCodec{}
+func BenchmarkRoundtripPB(t *testing.B) {
+	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = PBCodec{}
+	var objCopy pb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data,_:=c.Encode(&obj)
-		var obj_copy *model.Object
-		c.Decode(data,&obj_copy)
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
+	}
+}
+
+func BenchmarkRoundtripJSON(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = JSONCodec{}
+	var objCopy *model.Object
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
+	}
+}
+
+func BenchmarkRoundtripXML(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
+	var c = XMLCodec{}
+	var objCopy *model.Object
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
+	}
+}
+
+func BenchmarkRoundtripGOB(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOBCodec{}
+	var objCopy *model.Object
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		data, _ := c.Encode(&obj)
+		c.Decode(data, &objCopy)
 	}
 }

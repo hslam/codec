@@ -6,4 +6,5 @@ struct Object {
 	E   string
 	F   bool
 	G   []byte
+	H   [][]byte
 }
