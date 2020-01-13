@@ -23,6 +23,7 @@ func TestBYTESCodecPool(t *testing.T) {
 	c.Decode(data, &objCopy)
 	p.Put(c)
 	p.Put(ct)
+	p.Get()
 }
 
 func TestCODECodecPool(t *testing.T) {
@@ -46,6 +47,7 @@ func TestCODECodecPool(t *testing.T) {
 		c.Decode(data, &objCopy)
 		p.Put(c)
 		p.Put(ct)
+		p.Get()
 	}
 	{
 		p = NewCODECodecPool(1024, 65536)
@@ -79,6 +81,7 @@ func TestGOGOPBCodecPool(t *testing.T) {
 			c.Decode(data, &objCopy)
 			p.Put(c)
 			p.Put(ct)
+			p.Get()
 		}
 		{
 			p = NewGOGOPBCodecPool(1024, 65536)
@@ -131,6 +134,7 @@ func TestMSGPCodecPool(t *testing.T) {
 		c.Decode(data, &objCopy)
 		p.Put(c)
 		p.Put(ct)
+		p.Get()
 	}
 	{
 		p = NewMSGPCodecPool(1024, 65536)
@@ -162,6 +166,7 @@ func TestPBCodecPool(t *testing.T) {
 	c.Decode(data, &objCopy)
 	p.Put(c)
 	p.Put(ct)
+	p.Get()
 }
 
 func TestJSONCodecPool(t *testing.T) {
@@ -184,6 +189,7 @@ func TestJSONCodecPool(t *testing.T) {
 	c.Decode(data, &objCopy)
 	p.Put(c)
 	p.Put(ct)
+	p.Get()
 }
 
 func TestXMLCodecPool(t *testing.T) {
@@ -206,6 +212,7 @@ func TestXMLCodecPool(t *testing.T) {
 	c.Decode(data, &objCopy)
 	p.Put(c)
 	p.Put(ct)
+	p.Get()
 }
 
 func TestGOBCodecPool(t *testing.T) {
@@ -228,4 +235,5 @@ func TestGOBCodecPool(t *testing.T) {
 	c.Decode(data, &objCopy)
 	p.Put(c)
 	p.Put(ct)
+	p.Get()
 }
