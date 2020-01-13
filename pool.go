@@ -1,228 +1,302 @@
+// Copyright (c) 2019 Meng Huang (mhboy@outlook.com)
+// This package is licensed under a MIT license that can be found in the LICENSE file.
+
 package codec
 
-type CodecPool interface {
-	Get()(Codec)
+// Pool defines the interface of codec pool.
+type Pool interface {
+	Get() Codec
 	Put(c Codec)
 }
 
-type JsonCodecPool struct {
+// JSONCodecPool implements a pool of JSONCodec in the form of a bounded channel.
+type JSONCodecPool struct {
 	c chan Codec
 }
 
-func NewJsonCodecPool(total int) (*JsonCodecPool) {
-	return &JsonCodecPool{
+// NewJSONCodecPool creates a new JSONCodecPool bounded to the given total.
+func NewJSONCodecPool(total int) *JSONCodecPool {
+	return &JSONCodecPool{
 		c: make(chan Codec, total),
 	}
 }
 
-func (cp *JsonCodecPool) Get() (c Codec) {
+// Get gets a JSONCodec from the JSONCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *JSONCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		c = &JsonCodec{}
+		// create new Codec
+		c = &JSONCodec{}
 	}
 	return
 }
 
-func (cp *JsonCodecPool) Put(c Codec) {
+// Put returns the given JSONCodec to the JSONCodecPool.
+func (cp *JSONCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-type ProtoCodecPool struct {
+// PBCodecPool implements a pool of PBCodec in the form of a bounded channel.
+type PBCodecPool struct {
 	c chan Codec
 }
 
-func NewProtoCodecPool(total int) (*ProtoCodecPool) {
-	return &ProtoCodecPool{
+// NewPBCodecPool creates a new PBCodecPool bounded to the given total.
+func NewPBCodecPool(total int) *PBCodecPool {
+	return &PBCodecPool{
 		c: make(chan Codec, total),
 	}
 }
 
-func (cp *ProtoCodecPool) Get() (c Codec) {
+// Get gets a PBCodec from the PBCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *PBCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		c = &ProtoCodec{}
+		// create new Codec
+		c = &PBCodec{}
 	}
 	return
 }
 
-func (cp *ProtoCodecPool) Put(c Codec) {
+// Put returns the given PBCodec to the PBCodecPool.
+func (cp *PBCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-type XmlCodecPool struct {
+// XMLCodecPool implements a pool of XMLCodec in the form of a bounded channel.
+type XMLCodecPool struct {
 	c chan Codec
 }
 
-func NewXmlCodecPool(total int) (*XmlCodecPool) {
-	return &XmlCodecPool{
+// NewXMLCodecPool creates a new XMLCodecPool bounded to the given total.
+func NewXMLCodecPool(total int) *XMLCodecPool {
+	return &XMLCodecPool{
 		c: make(chan Codec, total),
 	}
 }
 
-func (cp *XmlCodecPool) Get() (c Codec) {
+// Get gets a XMLCodec from the XMLCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *XMLCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		c = &XmlCodec{}
+		// create new Codec
+		c = &XMLCodec{}
 	}
 	return
 }
 
-func (cp *XmlCodecPool) Put(c Codec) {
+// Put returns the given XMLCodec to the XMLCodecPool.
+func (cp *XMLCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-
-type GobCodecPool struct {
+// GOBCodecPool implements a pool of GOBCodec in the form of a bounded channel.
+type GOBCodecPool struct {
 	c chan Codec
 }
 
-func NewGobCodecPool(total int) (*GobCodecPool) {
-	return &GobCodecPool{
+// NewGOBCodecPool creates a new GOBCodecPool bounded to the given total.
+func NewGOBCodecPool(total int) *GOBCodecPool {
+	return &GOBCodecPool{
 		c: make(chan Codec, total),
 	}
 }
 
-func (cp *GobCodecPool) Get() (c Codec) {
+// Get gets a GOBCodec from the GOBCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *GOBCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		c = &GobCodec{}
+		// create new Codec
+		c = &GOBCodec{}
 	}
 	return
 }
 
-func (cp *GobCodecPool) Put(c Codec) {
+// Put returns the given GOBCodec to the GOBCodecPool.
+func (cp *GOBCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-
-type BytesCodecPool struct {
+// BYTESCodecPool implements a pool of BYTESCodec in the form of a bounded channel.
+type BYTESCodecPool struct {
 	c chan Codec
 }
 
-func NewBytesCodecPool(total int) (*BytesCodecPool) {
-	return &BytesCodecPool{
+// NewBYTESCodecPool creates a new BYTESCodecPool bounded to the given total.
+func NewBYTESCodecPool(total int) *BYTESCodecPool {
+	return &BYTESCodecPool{
 		c: make(chan Codec, total),
 	}
 }
 
-func (cp *BytesCodecPool) Get() (c Codec) {
+// Get gets a BYTESCodec from the BYTESCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *BYTESCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		c = &BytesCodec{}
+		// create new Codec
+		c = &BYTESCodec{}
 	}
 	return
 }
 
-func (cp *BytesCodecPool) Put(c Codec) {
+// Put returns the given BYTESCodec to the BYTESCodecPool.
+func (cp *BYTESCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-type GogoProtoCodecPool struct {
+// GOGOPBCodecPool implements a pool of GOGOPBCodec in the form of a bounded channel.
+type GOGOPBCodecPool struct {
 	c chan Codec
 }
 
-func NewGogoProtoCodecPool(total int) (*GogoProtoCodecPool) {
-	return &GogoProtoCodecPool{
+// NewGOGOPBCodecPool creates a new GOGOPBCodecPool bounded to the given total.
+func NewGOGOPBCodecPool(total int) *GOGOPBCodecPool {
+	return &GOGOPBCodecPool{
 		c: make(chan Codec, total),
 	}
 }
 
-func (cp *GogoProtoCodecPool) Get() (c Codec) {
+// Get gets a GOGOPBCodec from the GOGOPBCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *GOGOPBCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		c = &GogoProtoCodec{}
+		// create new Codec
+		c = &GOGOPBCodec{}
 	}
 	return
 }
 
-func (cp *GogoProtoCodecPool) Put(c Codec) {
+// Put returns the given GOGOPBCodec to the GOGOPBCodecPool.
+func (cp *GOGOPBCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-type CodeCodecPool struct {
+// CODECodecPool implements a pool of CODECodec in the form of a bounded channel.
+type CODECodecPool struct {
 	c chan Codec
 	w int
 }
 
-func NewCodeCodecPool(total int, width int) (*CodeCodecPool) {
-	return &CodeCodecPool{
+// NewCODECodecPool creates a new CODECodecPool bounded to the given total.
+func NewCODECodecPool(total int, width int) *CODECodecPool {
+	return &CODECodecPool{
 		c: make(chan Codec, total),
 		w: width,
 	}
 }
 
-func (cp *CodeCodecPool) Get() (c Codec) {
+// Get gets a CODECodec from the CODECodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *CODECodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		if cp.w>0{
-			c = &CodeCodec{make([]byte,cp.w)}
-		}else {
-			c = &CodeCodec{}
+		// create new Codec
+		if cp.w > 0 {
+			c = &CODECodec{make([]byte, cp.w)}
+		} else {
+			c = &CODECodec{}
 		}
 	}
 	return
 }
 
-func (cp *CodeCodecPool) Put(c Codec) {
+// Put returns the given CODECodec to the CODECodecPool.
+func (cp *CODECodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }
 
-type MsgpCodecPool struct {
+// MSGPCodecPool implements a pool of MSGPCodec in the form of a bounded channel.
+type MSGPCodecPool struct {
 	c chan Codec
 	w int
 }
 
-func NewMsgpCodecPool(total int, width int) (*MsgpCodecPool) {
-	return &MsgpCodecPool{
+// NewMSGPCodecPool creates a new MSGPCodecPool bounded to the given total.
+func NewMSGPCodecPool(total int, width int) *MSGPCodecPool {
+	return &MSGPCodecPool{
 		c: make(chan Codec, total),
 		w: width,
 	}
 }
 
-func (cp *MsgpCodecPool) Get() (c Codec) {
+// Get gets a MSGPCodec from the MSGPCodecPool, or creates a new one if none are
+// available in the pool.
+func (cp *MSGPCodecPool) Get() (c Codec) {
 	select {
 	case c = <-cp.c:
+		// reuse existing Codec
 	default:
-		if cp.w>0{
-			c = &MsgpCodec{make([]byte,cp.w)}
-		}else {
-			c = &MsgpCodec{}
+		// create new Codec
+		if cp.w > 0 {
+			c = &MSGPCodec{make([]byte, cp.w)}
+		} else {
+			c = &MSGPCodec{}
 		}
 	}
 	return
 }
 
-func (cp *MsgpCodecPool) Put(c Codec) {
+// Put returns the given MSGPCodec to the MSGPCodecPool.
+func (cp *MSGPCodecPool) Put(c Codec) {
 	select {
 	case cp.c <- c:
+		// Codec went back into pool
 	default:
+		// Codec didn't go back into pool, just discard
 	}
 }

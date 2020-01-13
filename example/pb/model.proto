@@ -9,4 +9,5 @@ message Object {
     string E = 5;
     bool F = 6;
     bytes G = 7;
+    repeated bytes H = 8;
 }
