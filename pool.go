@@ -187,12 +187,14 @@ func (cp *BYTESCodecPool) Put(c Codec) {
 // GOGOPBCodecPool implements a pool of GOGOPBCodec in the form of a bounded channel.
 type GOGOPBCodecPool struct {
 	c chan Codec
+	w int
 }
 
 // NewGOGOPBCodecPool creates a new GOGOPBCodecPool bounded to the given total.
-func NewGOGOPBCodecPool(total int) *GOGOPBCodecPool {
+func NewGOGOPBCodecPool(total int, width int) *GOGOPBCodecPool {
 	return &GOGOPBCodecPool{
 		c: make(chan Codec, total),
+		w: width,
 	}
 }
 
@@ -204,7 +206,11 @@ func (cp *GOGOPBCodecPool) Get() (c Codec) {
 		// reuse existing Codec
 	default:
 		// create new Codec
-		c = &GOGOPBCodec{}
+		if cp.w > 0 {
+			c = &GOGOPBCodec{make([]byte, cp.w)}
+		} else {
+			c = &GOGOPBCodec{}
+		}
 	}
 	return
 }

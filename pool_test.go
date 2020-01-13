@@ -54,23 +54,54 @@ func TestCODECodecPool(t *testing.T) {
 }
 
 func TestGOGOPBCodecPool(t *testing.T) {
-	var p Pool
-	var obj = gogopb.Object{
-		A: 1024,
-		B: 1024,
-		C: 3.14,
-		D: 3.1415926,
-		E: "HelloWorld",
-		F: true,
-		G: []byte{255},
-		H: [][]byte{{128}, {255}},
+	{
+		var p Pool
+		var obj = gogopb.Object{
+			A: 1024,
+			B: 1024,
+			C: 3.14,
+			D: 3.1415926,
+			E: "HelloWorld",
+			F: true,
+			G: []byte{255},
+			H: [][]byte{{128}, {255}},
+		}
+		{
+			p = NewGOGOPBCodecPool(1024, 0)
+			c := p.Get()
+			data, _ := c.Encode(&obj)
+			var objCopy = gogopb.Object{}
+			c.Decode(data, &objCopy)
+			p.Put(c)
+		}
+		{
+			p = NewGOGOPBCodecPool(1024, 65536)
+			c := p.Get()
+			data, _ := c.Encode(&obj)
+			var objCopy = gogopb.Object{}
+			c.Decode(data, &objCopy)
+			p.Put(c)
+		}
 	}
-	p = NewGOGOPBCodecPool(1024)
-	c := p.Get()
-	data, _ := c.Encode(&obj)
-	var objCopy = gogopb.Object{}
-	c.Decode(data, &objCopy)
-	p.Put(c)
+	{
+		var p Pool
+		var obj = pb.Object{
+			A: 1024,
+			B: 1024,
+			C: 3.14,
+			D: 3.1415926,
+			E: "HelloWorld",
+			F: true,
+			G: []byte{255},
+			H: [][]byte{{128}, {255}},
+		}
+		p = NewGOGOPBCodecPool(1024, 0)
+		c := p.Get()
+		data, _ := c.Encode(&obj)
+		var objCopy = pb.Object{}
+		c.Decode(data, &objCopy)
+		p.Put(c)
+	}
 }
 
 func TestMSGPCodecPool(t *testing.T) {
