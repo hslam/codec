@@ -17,10 +17,12 @@ func TestBYTESCodecPool(t *testing.T) {
 	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
 	p = NewBYTESCodecPool(1)
 	c := p.Get()
+	ct := p.Get()
 	data, _ := c.Encode(&obj)
 	var objCopy []byte
 	c.Decode(data, &objCopy)
 	p.Put(c)
+	p.Put(ct)
 }
 
 func TestCODECodecPool(t *testing.T) {
@@ -36,12 +38,14 @@ func TestCODECodecPool(t *testing.T) {
 		H: [][]byte{{128}, {255}},
 	}
 	{
-		p = NewCODECodecPool(1024, 0)
+		p = NewCODECodecPool(1, 0)
 		c := p.Get()
+		ct := p.Get()
 		data, _ := c.Encode(&obj)
 		var objCopy = gencode.Object{}
 		c.Decode(data, &objCopy)
 		p.Put(c)
+		p.Put(ct)
 	}
 	{
 		p = NewCODECodecPool(1024, 65536)
@@ -67,12 +71,14 @@ func TestGOGOPBCodecPool(t *testing.T) {
 			H: [][]byte{{128}, {255}},
 		}
 		{
-			p = NewGOGOPBCodecPool(1024, 0)
+			p = NewGOGOPBCodecPool(1, 0)
 			c := p.Get()
+			ct := p.Get()
 			data, _ := c.Encode(&obj)
 			var objCopy = gogopb.Object{}
 			c.Decode(data, &objCopy)
 			p.Put(c)
+			p.Put(ct)
 		}
 		{
 			p = NewGOGOPBCodecPool(1024, 65536)
@@ -117,12 +123,14 @@ func TestMSGPCodecPool(t *testing.T) {
 		H: [][]byte{{128}, {255}},
 	}
 	{
-		p = NewMSGPCodecPool(1024, 0)
+		p = NewMSGPCodecPool(1, 0)
 		c := p.Get()
+		ct := p.Get()
 		data, _ := c.Encode(&obj)
 		var objCopy = msgp.Object{}
 		c.Decode(data, &objCopy)
 		p.Put(c)
+		p.Put(ct)
 	}
 	{
 		p = NewMSGPCodecPool(1024, 65536)
@@ -146,12 +154,14 @@ func TestPBCodecPool(t *testing.T) {
 		G: []byte{255},
 		H: [][]byte{{128}, {255}},
 	}
-	p = NewPBCodecPool(1024)
+	p = NewPBCodecPool(1)
 	c := p.Get()
+	ct := p.Get()
 	data, _ := c.Encode(&obj)
 	var objCopy = pb.Object{}
 	c.Decode(data, &objCopy)
 	p.Put(c)
+	p.Put(ct)
 }
 
 func TestJSONCodecPool(t *testing.T) {
@@ -166,12 +176,14 @@ func TestJSONCodecPool(t *testing.T) {
 		G: []byte{255},
 		H: [][]byte{{128}, {255}},
 	}
-	p = NewJSONCodecPool(1024)
+	p = NewJSONCodecPool(1)
 	c := p.Get()
+	ct := p.Get()
 	data, _ := c.Encode(&obj)
 	var objCopy = model.Object{}
 	c.Decode(data, &objCopy)
 	p.Put(c)
+	p.Put(ct)
 }
 
 func TestXMLCodecPool(t *testing.T) {
@@ -186,12 +198,14 @@ func TestXMLCodecPool(t *testing.T) {
 		G: []byte{255},
 		H: [][]byte{{128}, {255}},
 	}
-	p = NewXMLCodecPool(1024)
+	p = NewXMLCodecPool(1)
 	c := p.Get()
+	ct := p.Get()
 	data, _ := c.Encode(&obj)
 	var objCopy = model.Object{}
 	c.Decode(data, &objCopy)
 	p.Put(c)
+	p.Put(ct)
 }
 
 func TestGOBCodecPool(t *testing.T) {
@@ -206,10 +220,12 @@ func TestGOBCodecPool(t *testing.T) {
 		G: []byte{255},
 		H: [][]byte{{128}, {255}},
 	}
-	p = NewGOBCodecPool(1024)
+	p = NewGOBCodecPool(1)
 	c := p.Get()
+	ct := p.Get()
 	data, _ := c.Encode(&obj)
 	var objCopy = model.Object{}
 	c.Decode(data, &objCopy)
 	p.Put(c)
+	p.Put(ct)
 }
