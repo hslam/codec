@@ -78,7 +78,6 @@ func (o *Object) Unmarshal(data []byte) (uint64, error) {
 	var length uint64 = uint64(len(data))
 	var offset uint64
 	var n uint64
-	var t uint64
 	var tag uint64
 	var fieldNumber int
 	var wireType uint8
@@ -99,6 +98,7 @@ func (o *Object) Unmarshal(data []byte) (uint64, error) {
 			if wireType != 0 {
 				return 0, fmt.Errorf("proto: wrong wireType = %d for field A", wireType)
 			}
+			var t uint64
 			n = code.DecodeVarint(data[offset:], &t)
 			o.A = uint32(t)
 			offset += n
@@ -149,8 +149,8 @@ func (o *Object) Unmarshal(data []byte) (uint64, error) {
 				offset += n
 				if offset < length {
 					//n = code.DecodeVarint(data[offset:], &t)
-					tag = uint64(data[offset])
-					if t == tag {
+					tmpTag := uint64(data[offset])
+					if tmpTag == tag {
 						//offset += n
 						offset++
 						continue
