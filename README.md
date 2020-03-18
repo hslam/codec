@@ -201,38 +201,38 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: github.com/hslam/codec
-BenchmarkEncodeBYTES-4        	1000000000	         0.388 ns/op
-BenchmarkEncodeCODE-4         	18417238	        63.6 ns/op
-BenchmarkEncodeGENCODE-4      	22390467	        51.2 ns/op
-BenchmarkEncodeCODEPB-4       	17877290	        65.8 ns/op
-BenchmarkEncodeMSGP-4         	13571006	        84.9 ns/op
-BenchmarkEncodeGOGOPB-4       	15944592	        73.4 ns/op
-BenchmarkEncodePB-4           	 4892133	       242 ns/op
-BenchmarkEncodeJSON-4         	 1251392	       943 ns/op
-BenchmarkEncodeXML-4          	  291318	      4071 ns/op
-BenchmarkEncodeGOB-4          	  203014	      5645 ns/op
-BenchmarkDecodeBYTES-4        	1000000000	         0.960 ns/op
-BenchmarkDecodeCODE-4         	23268570	        50.4 ns/op
-BenchmarkDecodeGENCODE-4      	17301549	        67.7 ns/op
-BenchmarkDecodeCODEPB-4       	16613464	        70.9 ns/op
-BenchmarkDecodeMSGP-4         	 3865035	       307 ns/op
-BenchmarkDecodeGOGOPB-4       	 2505402	       426 ns/op
-BenchmarkDecodePB-4           	 2665432	       450 ns/op
-BenchmarkDecodeJSON-4         	  421455	      2856 ns/op
-BenchmarkDecodeXML-4          	  142396	      8102 ns/op
-BenchmarkDecodeGOB-4          	   47439	     24950 ns/op
-BenchmarkRoundtripBYTES-4     	1000000000	         1.12 ns/op
-BenchmarkRoundtripCODE-4      	10073326	       118 ns/op
-BenchmarkRoundtripGENCODE-4   	 9897543	       120 ns/op
-BenchmarkRoundtripCODEPB-4    	 8407045	       141 ns/op
-BenchmarkRoundtripMSGP-4      	 2932954	       409 ns/op
-BenchmarkRoundtripGOGOPB-4    	 2878573	       451 ns/op
-BenchmarkRoundtripPB-4        	 1634523	       730 ns/op
-BenchmarkRoundtripJSON-4      	  297882	      3951 ns/op
-BenchmarkRoundtripXML-4       	   93462	     12792 ns/op
-BenchmarkRoundtripGOB-4       	   37586	     31512 ns/op
+BenchmarkEncodeBYTES-4        	1000000000	         0.617 ns/op
+BenchmarkEncodeCODE-4         	18222936	        64.2 ns/op
+BenchmarkEncodeGENCODE-4      	21402268	        54.6 ns/op
+BenchmarkEncodeCODEPB-4       	17994428	        64.9 ns/op
+BenchmarkEncodeMSGP-4         	13502540	        87.5 ns/op
+BenchmarkEncodeGOGOPB-4       	15440156	        76.1 ns/op
+BenchmarkEncodePB-4           	 4889565	       243 ns/op
+BenchmarkEncodeJSON-4         	 1267345	       943 ns/op
+BenchmarkEncodeXML-4          	  293656	      4069 ns/op
+BenchmarkEncodeGOB-4          	  199935	      5675 ns/op
+BenchmarkDecodeBYTES-4        	1000000000	         0.961 ns/op
+BenchmarkDecodeCODE-4         	23251303	        50.4 ns/op
+BenchmarkDecodeGENCODE-4      	16884618	        69.7 ns/op
+BenchmarkDecodeCODEPB-4       	16531594	        71.0 ns/op
+BenchmarkDecodeMSGP-4         	 3916285	       305 ns/op
+BenchmarkDecodeGOGOPB-4       	 2650914	       395 ns/op
+BenchmarkDecodePB-4           	 2646182	       447 ns/op
+BenchmarkDecodeJSON-4         	  428173	      2828 ns/op
+BenchmarkDecodeXML-4          	  144920	      8089 ns/op
+BenchmarkDecodeGOB-4          	   47562	     25011 ns/op
+BenchmarkRoundtripBYTES-4     	1000000000	         1.11 ns/op
+BenchmarkRoundtripCODE-4      	10003128	       119 ns/op
+BenchmarkRoundtripGENCODE-4   	 9484033	       126 ns/op
+BenchmarkRoundtripCODEPB-4    	 8389878	       142 ns/op
+BenchmarkRoundtripMSGP-4      	 2885835	       415 ns/op
+BenchmarkRoundtripGOGOPB-4    	 2837972	       464 ns/op
+BenchmarkRoundtripPB-4        	 1637950	       730 ns/op
+BenchmarkRoundtripJSON-4      	  296553	      3953 ns/op
+BenchmarkRoundtripXML-4       	   94116	     12485 ns/op
+BenchmarkRoundtripGOB-4       	   37731	     31733 ns/op
 PASS
-ok  	github.com/hslam/codec	41.569s
+ok  	github.com/hslam/codec	41.632s
 ```
 
 ### License
