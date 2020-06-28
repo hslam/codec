@@ -12,315 +12,448 @@ import (
 	"github.com/hslam/codec/example/model"
 	"github.com/hslam/codec/example/msgp"
 	"github.com/hslam/codec/example/pb"
+	codecpb "github.com/hslam/codec/pb"
 	"testing"
 )
 
-func BenchmarkEncodeBYTES(t *testing.B) {
+func TestBYTESCodec(t *testing.T) {
 	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
 	var c = BYTESCodec{}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
+	var buf = make([]byte, 512)
+	var objCopy []byte
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
 }
 
-func BenchmarkEncodeCODE(t *testing.B) {
+func TestCODECodec(t *testing.T) {
 	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	var objCopy code.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
 }
 
-func BenchmarkEncodeGENCODE(t *testing.B) {
+func TestGENCODECodec(t *testing.T) {
 	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	var objCopy gencode.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
+}
+func TestGOGOPBCodec(t *testing.T) {
+	{
+		var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = GOGOPBCodec{}
+		var buf = make([]byte, 512)
+		var objCopy gogopb.Object
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
+	}
+	{
+		var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = GOGOPBCodec{}
+		var buf = make([]byte, 0)
+		var objCopy gogopb.Object
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
+	}
+	{
+		var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = GOGOPBCodec{}
+		var buf = make([]byte, 512)
+		var objCopy model.Object
+		if _, err := c.Marshal(buf, &obj); err != ErrorGOGOPB {
+			t.Error(ErrorGOGOPB)
+		}
+		if err := c.Unmarshal(nil, &objCopy); err != ErrorGOGOPB {
+			t.Error(ErrorGOGOPB)
+		}
 	}
 }
 
-func BenchmarkEncodeCODEPB(t *testing.B) {
-	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
-}
-
-func BenchmarkEncodeMSGP(t *testing.B) {
+func TestMSGPCodec(t *testing.T) {
 	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = MSGPCodec{Buffer: make([]byte, 512)}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
+	var c = MSGPCodec{}
+	var buf = make([]byte, 512)
+	var objCopy msgp.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
 }
 
-func BenchmarkEncodeGOGOPB(t *testing.B) {
-	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = GOGOPBCodec{Buffer: make([]byte, 512)}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
-}
-
-func BenchmarkEncodePB(t *testing.B) {
+func TestPBCodec(t *testing.T) {
 	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = PBCodec{}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
+	var c = codecpb.Codec{}
+	var buf = make([]byte, 512)
+	var objCopy pb.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
 }
 
-func BenchmarkEncodeJSON(t *testing.B) {
+func TestJSONCodec(t *testing.T) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	var c = JSONCodec{}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
+	var buf = make([]byte, 512)
+	var objCopy *model.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
 }
 
-func BenchmarkEncodeXML(t *testing.B) {
+func TestXMLCodec(t *testing.T) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
 	var c = XMLCodec{}
-	t.ResetTimer()
-	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
-	}
+	var buf = make([]byte, 512)
+	var objCopy *model.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
 }
 
-func BenchmarkEncodeGOB(t *testing.B) {
+func TestGOBCodec(t *testing.T) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	var c = GOBCodec{}
+	var buf = make([]byte, 512)
+	var objCopy *model.Object
+	data, _ := c.Marshal(buf, &obj)
+	c.Unmarshal(data, &objCopy)
+}
+
+func BenchmarkMarshalBYTES(t *testing.B) {
+	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
+	var c = BYTESCodec{}
+	var buf = make([]byte, 512)
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Encode(&obj)
+		c.Marshal(buf, &obj)
 	}
 }
 
-func BenchmarkDecodeBYTES(t *testing.B) {
+func BenchmarkMarshalCODE(t *testing.B) {
+	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalGENCODE(t *testing.B) {
+	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalCODEPB(t *testing.B) {
+	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalMSGP(t *testing.B) {
+	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = MSGPCodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalGOGOPB(t *testing.B) {
+	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOGOPBCodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalPB(t *testing.B) {
+	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = codecpb.Codec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalJSON(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = JSONCodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalXML(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
+	var c = XMLCodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkMarshalGOB(t *testing.B) {
+	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+	var c = GOBCodec{}
+	var buf = make([]byte, 512)
+	t.ResetTimer()
+	for i := 0; i < t.N; i++ {
+		c.Marshal(buf, &obj)
+	}
+}
+
+func BenchmarkUnmarshalBYTES(t *testing.B) {
 	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
 	var c = BYTESCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy []byte
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeCODE(t *testing.B) {
+func BenchmarkUnmarshalCODE(t *testing.B) {
 	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy code.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeGENCODE(t *testing.B) {
+func BenchmarkUnmarshalGENCODE(t *testing.B) {
 	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy gencode.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeCODEPB(t *testing.B) {
+func BenchmarkUnmarshalCODEPB(t *testing.B) {
 	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy codepb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeMSGP(t *testing.B) {
+func BenchmarkUnmarshalMSGP(t *testing.B) {
 	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = MSGPCodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	var c = MSGPCodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy msgp.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeGOGOPB(t *testing.B) {
+func BenchmarkUnmarshalGOGOPB(t *testing.B) {
 	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = GOGOPBCodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	var c = GOGOPBCodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy gogopb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodePB(t *testing.B) {
+func BenchmarkUnmarshalPB(t *testing.B) {
 	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = PBCodec{}
-	data, _ := c.Encode(&obj)
+	var c = codecpb.Codec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy pb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeJSON(t *testing.B) {
+func BenchmarkUnmarshalJSON(t *testing.B) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	var c = JSONCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeXML(t *testing.B) {
+func BenchmarkUnmarshalXML(t *testing.B) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
 	var c = XMLCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
-func BenchmarkDecodeGOB(t *testing.B) {
+func BenchmarkUnmarshalGOB(t *testing.B) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	var c = GOBCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		c.Decode(data, &objCopy)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripBYTES(t *testing.B) {
 	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
 	var c = BYTESCodec{}
+	var buf = make([]byte, 512)
 	var objCopy []byte
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripCODE(t *testing.B) {
 	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
 	var objCopy code.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripGENCODE(t *testing.B) {
 	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
 	var objCopy gencode.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripCODEPB(t *testing.B) {
 	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{Buffer: make([]byte, 512)}
+	var c = CODECodec{}
+	var buf = make([]byte, 512)
 	var objCopy codepb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripMSGP(t *testing.B) {
 	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = MSGPCodec{Buffer: make([]byte, 512)}
+	var c = MSGPCodec{}
+	var buf = make([]byte, 512)
 	var objCopy msgp.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripGOGOPB(t *testing.B) {
 	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = GOGOPBCodec{Buffer: make([]byte, 512)}
+	var c = GOGOPBCodec{}
+	var buf = make([]byte, 512)
 	var objCopy gogopb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripPB(t *testing.B) {
 	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = PBCodec{}
+	var c = codecpb.Codec{}
+	var buf = make([]byte, 512)
 	var objCopy pb.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripJSON(t *testing.B) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	var c = JSONCodec{}
+	var buf = make([]byte, 512)
 	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripXML(t *testing.B) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
 	var c = XMLCodec{}
+	var buf = make([]byte, 512)
 	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }
 
 func BenchmarkRoundtripGOB(t *testing.B) {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	var c = GOBCodec{}
+	var buf = make([]byte, 512)
 	var objCopy *model.Object
 	t.ResetTimer()
 	for i := 0; i < t.N; i++ {
-		data, _ := c.Encode(&obj)
-		c.Decode(data, &objCopy)
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
 	}
 }

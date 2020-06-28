@@ -35,40 +35,56 @@ func (o *Object) Marshal(buf []byte) ([]byte, error) {
 	}
 	var offset uint64
 	var n uint64
-	buf[offset] = 1<<3 | 0
-	offset++
-	n = code.EncodeVarint(buf[offset:], uint64(o.A))
-	offset += n
-	buf[offset] = 2<<3 | 0
-	offset++
-	n = code.EncodeVarint(buf[offset:], o.B)
-	offset += n
-	buf[offset] = 3<<3 | 5
-	offset++
-	n = code.EncodeFloat32(buf[offset:], o.C)
-	offset += n
-	buf[offset] = 4<<3 | 1
-	offset++
-	n = code.EncodeFloat64(buf[offset:], o.D)
-	offset += n
-	buf[offset] = 5<<3 | 2
-	offset++
-	n = code.EncodeString(buf[offset:], o.E)
-	offset += n
-	buf[offset] = 6<<3 | 0
-	offset++
-	n = code.EncodeBool(buf[offset:], o.F)
-	offset += n
-	buf[offset] = 7<<3 | 2
-	offset++
-	n = code.EncodeBytes(buf[offset:], o.G)
-	offset += n
-	tag := byte(8<<3 | 2)
-	for _, v := range o.H {
-		buf[offset] = tag
+	if o.A != 0 {
+		buf[offset] = 1<<3 | 0
 		offset++
-		n = code.EncodeBytes(buf[offset:], v)
+		n = code.EncodeVarint(buf[offset:], uint64(o.A))
 		offset += n
+	}
+	if o.B != 0 {
+		buf[offset] = 2<<3 | 0
+		offset++
+		n = code.EncodeVarint(buf[offset:], o.B)
+		offset += n
+	}
+	if o.C != 0 {
+		buf[offset] = 3<<3 | 5
+		offset++
+		n = code.EncodeFloat32(buf[offset:], o.C)
+		offset += n
+	}
+	if o.D != 0 {
+		buf[offset] = 4<<3 | 1
+		offset++
+		n = code.EncodeFloat64(buf[offset:], o.D)
+		offset += n
+	}
+	if len(o.E) > 0 {
+		buf[offset] = 5<<3 | 2
+		offset++
+		n = code.EncodeString(buf[offset:], o.E)
+		offset += n
+	}
+	if o.F == true {
+		buf[offset] = 6<<3 | 0
+		offset++
+		n = code.EncodeBool(buf[offset:], o.F)
+		offset += n
+	}
+	if len(o.G) > 0 {
+		buf[offset] = 7<<3 | 2
+		offset++
+		n = code.EncodeBytes(buf[offset:], o.G)
+		offset += n
+	}
+	if len(o.H) > 0 {
+		tag := byte(8<<3 | 2)
+		for _, v := range o.H {
+			buf[offset] = tag
+			offset++
+			n = code.EncodeBytes(buf[offset:], v)
+			offset += n
+		}
 	}
 	return buf[:offset], nil
 }
