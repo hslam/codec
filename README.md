@@ -45,6 +45,7 @@ import (
 	"github.com/hslam/codec/example/model"
 	"github.com/hslam/codec/example/msgp"
 	"github.com/hslam/codec/example/pb"
+	codecpb "github.com/hslam/codec/pb"
 )
 
 func main() {
@@ -64,76 +65,83 @@ func main() {
 func BYTES() {
 	var obj = []byte{128, 8, 128, 8, 195, 245, 72, 64, 74, 216, 18, 77, 251, 33, 9, 64, 10, 72, 101, 108, 108, 111, 87, 111, 114, 108, 100, 1, 1, 255, 2, 1, 128, 1, 255}
 	c := &codec.BYTESCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("bytes Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy []byte
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("bytes Decode：", objCopy)
 }
 
 //CODE Example
 func CODE() {
 	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	c := &codec.CODECodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	c := &codec.CODECodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("code Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy code.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("code Decode：", objCopy)
 }
 
 //GENCODE Example
 func GENCODE() {
 	var obj = gencode.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	c := &codec.CODECodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	c := &codec.CODECodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("gencode Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy gencode.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("gencode Decode：", objCopy)
 }
 
 //CODEPB Example
 func CODEPB() {
 	var obj = codepb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	c := &codec.CODECodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	c := &codec.CODECodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("codepb Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy codepb.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("codepb Decode：", objCopy)
 }
 
 //MSGP Example
 func MSGP() {
 	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	c := &codec.MSGPCodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	c := &codec.MSGPCodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("msgp Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy msgp.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("msgp Decode：", objCopy)
 }
 
 //GOGOPB Example
 func GOGOPB() {
 	var obj = gogopb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	c := &codec.GOGOPBCodec{Buffer: make([]byte, 512)}
-	data, _ := c.Encode(&obj)
+	c := &codec.GOGOPBCodec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("gogopb Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy gogopb.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("gogopb Decode：", objCopy)
 }
 
 //PB Example
 func PB() {
 	var obj = pb.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	c := &codec.PBCodec{}
-	data, _ := c.Encode(&obj)
+	c := &codecpb.Codec{}
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("pb Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy pb.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("pb Decode：", objCopy)
 }
 
@@ -141,10 +149,11 @@ func PB() {
 func JSON() {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	c := &codec.JSONCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("json Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy model.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("json Decode：", objCopy)
 }
 
@@ -152,10 +161,11 @@ func JSON() {
 func XML() {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true}
 	c := &codec.XMLCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("xml Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy model.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("xml Decode：", objCopy)
 }
 
@@ -163,10 +173,11 @@ func XML() {
 func GOB() {
 	var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
 	c := &codec.GOBCodec{}
-	data, _ := c.Encode(&obj)
+	var buf = make([]byte, 512)
+	data, _ := c.Marshal(buf, &obj)
 	fmt.Printf("gob Encode：length-%d,hex-%x\n", len(data), data)
 	var objCopy model.Object
-	c.Decode(data, &objCopy)
+	c.Unmarshal(data, &objCopy)
 	fmt.Println("gob Decode：", objCopy)
 }
 ```
@@ -201,38 +212,38 @@ go test -v -run="none" -bench=. -benchtime=1s
 goos: darwin
 goarch: amd64
 pkg: github.com/hslam/codec
-BenchmarkEncodeBYTES-4        	1000000000	         0.617 ns/op
-BenchmarkEncodeCODE-4         	18222936	        64.2 ns/op
-BenchmarkEncodeGENCODE-4      	21402268	        54.6 ns/op
-BenchmarkEncodeCODEPB-4       	17994428	        64.9 ns/op
-BenchmarkEncodeMSGP-4         	13502540	        87.5 ns/op
-BenchmarkEncodeGOGOPB-4       	15440156	        76.1 ns/op
-BenchmarkEncodePB-4           	 4889565	       243 ns/op
-BenchmarkEncodeJSON-4         	 1267345	       943 ns/op
-BenchmarkEncodeXML-4          	  293656	      4069 ns/op
-BenchmarkEncodeGOB-4          	  199935	      5675 ns/op
-BenchmarkDecodeBYTES-4        	1000000000	         0.961 ns/op
-BenchmarkDecodeCODE-4         	23251303	        50.4 ns/op
-BenchmarkDecodeGENCODE-4      	16884618	        69.7 ns/op
-BenchmarkDecodeCODEPB-4       	16531594	        71.0 ns/op
-BenchmarkDecodeMSGP-4         	 3916285	       305 ns/op
-BenchmarkDecodeGOGOPB-4       	 2650914	       395 ns/op
-BenchmarkDecodePB-4           	 2646182	       447 ns/op
-BenchmarkDecodeJSON-4         	  428173	      2828 ns/op
-BenchmarkDecodeXML-4          	  144920	      8089 ns/op
-BenchmarkDecodeGOB-4          	   47562	     25011 ns/op
-BenchmarkRoundtripBYTES-4     	1000000000	         1.11 ns/op
-BenchmarkRoundtripCODE-4      	10003128	       119 ns/op
-BenchmarkRoundtripGENCODE-4   	 9484033	       126 ns/op
-BenchmarkRoundtripCODEPB-4    	 8389878	       142 ns/op
-BenchmarkRoundtripMSGP-4      	 2885835	       415 ns/op
-BenchmarkRoundtripGOGOPB-4    	 2837972	       464 ns/op
-BenchmarkRoundtripPB-4        	 1637950	       730 ns/op
-BenchmarkRoundtripJSON-4      	  296553	      3953 ns/op
-BenchmarkRoundtripXML-4       	   94116	     12485 ns/op
-BenchmarkRoundtripGOB-4       	   37731	     31733 ns/op
+BenchmarkMarshalBYTES-4       	1000000000	         0.617 ns/op
+BenchmarkMarshalCODE-4        	19288862	        60.7 ns/op
+BenchmarkMarshalGENCODE-4     	22471933	        51.3 ns/op
+BenchmarkMarshalCODEPB-4      	18085290	        65.3 ns/op
+BenchmarkMarshalMSGP-4        	13062339	        86.4 ns/op
+BenchmarkMarshalGOGOPB-4      	15803642	        74.2 ns/op
+BenchmarkMarshalPB-4          	 4751841	       251 ns/op
+BenchmarkMarshalJSON-4        	 1242172	       946 ns/op
+BenchmarkMarshalXML-4         	  292514	      4038 ns/op
+BenchmarkMarshalGOB-4         	  200972	      5750 ns/op
+BenchmarkUnmarshalBYTES-4     	1000000000	         0.963 ns/op
+BenchmarkUnmarshalCODE-4      	23108276	        50.4 ns/op
+BenchmarkUnmarshalGENCODE-4   	17438856	        67.1 ns/op
+BenchmarkUnmarshalCODEPB-4    	16614250	        70.5 ns/op
+BenchmarkUnmarshalMSGP-4      	 3938742	       306 ns/op
+BenchmarkUnmarshalGOGOPB-4    	 2619876	       402 ns/op
+BenchmarkUnmarshalPB-4        	 2787482	       429 ns/op
+BenchmarkUnmarshalJSON-4      	  428154	      2859 ns/op
+BenchmarkUnmarshalXML-4       	  140838	      8098 ns/op
+BenchmarkUnmarshalGOB-4       	   46917	     25418 ns/op
+BenchmarkRoundtripBYTES-4     	1000000000	         1.10 ns/op
+BenchmarkRoundtripCODE-4      	10372450	       114 ns/op
+BenchmarkRoundtripGENCODE-4   	 9431589	       124 ns/op
+BenchmarkRoundtripCODEPB-4    	 7687908	       141 ns/op
+BenchmarkRoundtripMSGP-4      	 2930395	       408 ns/op
+BenchmarkRoundtripGOGOPB-4    	 2612359	       450 ns/op
+BenchmarkRoundtripPB-4        	 1660060	       721 ns/op
+BenchmarkRoundtripJSON-4      	  300906	      3976 ns/op
+BenchmarkRoundtripXML-4       	   92065	     12946 ns/op
+BenchmarkRoundtripGOB-4       	   37810	     31877 ns/op
 PASS
-ok  	github.com/hslam/codec	41.632s
+ok  	github.com/hslam/codec	41.485s
 ```
 
 ### License
