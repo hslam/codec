@@ -1,1 +1,1 @@
-protoc ./model.proto --gofast_out=./
+protoc ./model.proto --gogofaster_out=./
