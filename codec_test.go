@@ -26,12 +26,26 @@ func TestBYTESCodec(t *testing.T) {
 }
 
 func TestCODECodec(t *testing.T) {
-	var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = CODECodec{}
-	var buf = make([]byte, 512)
-	var objCopy code.Object
-	data, _ := c.Marshal(buf, &obj)
-	c.Unmarshal(data, &objCopy)
+	{
+		var obj = code.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = CODECodec{}
+		var buf = make([]byte, 512)
+		var objCopy code.Object
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
+	}
+	{
+		var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = CODECodec{}
+		var buf = make([]byte, 512)
+		var objCopy model.Object
+		if _, err := c.Marshal(buf, &obj); err != ErrorCODE {
+			t.Error(ErrorCODE)
+		}
+		if err := c.Unmarshal(nil, &objCopy); err != ErrorCODE {
+			t.Error(ErrorCODE)
+		}
+	}
 }
 
 func TestGENCODECodec(t *testing.T) {
@@ -74,12 +88,27 @@ func TestGOGOPBCodec(t *testing.T) {
 }
 
 func TestMSGPCodec(t *testing.T) {
-	var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
-	var c = MSGPCodec{}
-	var buf = make([]byte, 512)
-	var objCopy msgp.Object
-	data, _ := c.Marshal(buf, &obj)
-	c.Unmarshal(data, &objCopy)
+	{
+		var obj = msgp.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = MSGPCodec{}
+		var buf = make([]byte, 512)
+		var objCopy msgp.Object
+		data, _ := c.Marshal(buf, &obj)
+		c.Unmarshal(data, &objCopy)
+	}
+	{
+		var obj = model.Object{A: 1024, B: 1024, C: 3.14, D: 3.1415926, E: "HelloWorld", F: true, G: []byte{255}, H: [][]byte{{128}, {255}}}
+		var c = MSGPCodec{}
+		var buf = make([]byte, 512)
+		var objCopy model.Object
+		if _, err := c.Marshal(buf, &obj); err != ErrorMSGP {
+			t.Error(ErrorMSGP)
+		}
+		if err := c.Unmarshal(nil, &objCopy); err != ErrorMSGP {
+			t.Error(ErrorMSGP)
+		}
+	}
+
 }
 
 func TestPBCodec(t *testing.T) {
