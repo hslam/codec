@@ -249,5 +249,5 @@ ok  	github.com/hslam/codec	42.864s
 ### License
 This package is licensed under a MIT license (Copyright (c) 2019 Meng Huang)
 
-### Authors
+### Author
 codec was written by Meng Huang.
