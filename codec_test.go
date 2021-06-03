@@ -1,7 +1,6 @@
 // Copyright (c) 2019 Meng Huang (mhboy@outlook.com)
 // This package is licensed under a MIT license that can be found in the LICENSE file.
 
-// Package codec implements encoding and decoding of multiple codecs
 package codec
 
 import (
