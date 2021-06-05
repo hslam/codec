@@ -32,7 +32,7 @@ import "github.com/hslam/codec"
 ```
 ### Usage
 #### Example
-```
+```go
 package main
 
 import (
